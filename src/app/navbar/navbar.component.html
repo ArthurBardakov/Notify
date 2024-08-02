@@ -1,0 +1,38 @@
+<nav>
+  <div id="menuWrapper">
+    @for (icon of Icons; track $index) {
+      <mat-icon
+        #m_icon
+        aria-hidden="false"
+        id="m_icon{{ $index }}"
+        [fontIcon]="icon"
+        (click)="SwitchBubble($index)"
+      >
+      </mat-icon>
+    }
+  </div>
+  <div id="bgWrapper">
+    <div id="bg"></div>
+    <div id="bg_bubble_outer" class="bg_bubble"></div>
+    <div id="bg_bubble_inner" class="bg_bubble">
+      <span id="bg_icon">
+        <mat-icon class="active-page" aria-hidden="false" [fontIcon]="Icons[navSrc.CurrentPage]">
+        </mat-icon>
+      </span>
+    </div>
+  </div>
+  <svg width="0" height="0" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="blur_bubble">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="20" result="blur" id="bb_filter" />
+        <feColorMatrix
+          in="blur"
+          mode="matrix"
+          values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 30 -15"
+          result="goo"
+        />
+        <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+      </filter>
+    </defs>
+  </svg>
+</nav>
