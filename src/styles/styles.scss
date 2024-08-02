@@ -1,7 +1,11 @@
-@use "@angular/material" as mat;
-@use "./m3-theme";
+@use '@angular/material' as mat;
+@use './m3-theme';
 
-body { background-color: mat.get-theme-color(m3-theme.$light-theme, primary, 98); }
+:root {
+  @include mat.all-component-themes(m3-theme.$light-theme);
+  --bg-color: #{mat.get-theme-color(m3-theme.$light-theme, primary, 98)};
+}
+
 *,
 ::after,
 ::before {
@@ -10,6 +14,6 @@ body { background-color: mat.get-theme-color(m3-theme.$light-theme, primary, 98)
   box-sizing: border-box;
 }
 
-:root {
-  @include mat.all-component-themes(m3-theme.$light-theme);
+body {
+  background-color: var(--bg-color);
 }
