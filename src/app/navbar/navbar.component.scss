@@ -1,86 +1,68 @@
-$bgBblBottom: -72%;
 $bblSize: 9vw;
 $minBblSize: 55px;
 $maxBblSize: 120px;
 
 nav {
+  position: relative;
+  display: flex;
+  height: 100%;
+}
+
+.menuWrapper {
+  align-self: flex-end;
+  position: relative;
+  width: 100%;
+  height: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.bgWrapper {
+  position: absolute;
+  width: 100%;
+  height: 90%;
+  bottom: 81%;
+  filter: url(#blur_bubble);
+}
+
+.bg {
+  background-color: var(--bg-color);
+  width: 100%;
+  height: 100%;
+  margin-top: 1%;
+}
+
+.bg_bubble {
+  position: absolute;
+  border-radius: 50%;
+  transform: translate(-50%, 100%);
+  bottom: -72%;
+  width: $bblSize;
+  height: $bblSize;
+  min-width: $minBblSize;
+  max-width: $maxBblSize;
+  min-height: $minBblSize;
+  max-height: $maxBblSize;
+  opacity: 0;
+  will-change: transform, bottom;
+}
+
+.bg_bubble_outer {
+  background: #ffa7a7;
+}
+
+.bg_bubble_inner {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
-  bottom: -5px;
-  // background: #ffa7a7;
-  // background: linear-gradient(to top, #ffa7a7 30%, #ffa7a7c4, #ffa7a7a1, var(--c11), var(--c11));
-  background: linear-gradient(to top, #ffa7a7 30%, #ffa7a796, var(--bg-color) var(--bg-color));
-  // background: linear-gradient(to top, var(--c2), #f08a5d4d, var(--c11));
-  // box-shadow: inset #383558 0px 30px 20px 0px;
-  // box-shadow: inset #ffa7a76c 0px -20px 0px 0px;
+  opacity: 0;
+  box-shadow: #38355800 0px 0px 20px 10px;
+  background: #f4c0c0;
+}
 
-  #menuWrapper {
-    position: absolute;
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    transform: translateY(50%);
-  }
-
-  #bgWrapper {
-    position: absolute;
-    width: 100%;
-    height: 90%;
-    bottom: 81%;
-    filter: url(#blur_bubble);
-
-    #bg {
-      // background: linear-gradient(to top, var(--c1) 80%, #37365800);
-      background-color: var(--bg-color);
-      width: 100%;
-      height: 100%;
-      margin-top: 1%;
-      // to hide blur circle effect when bg_bubble_inner is at -10px - y position!
-      box-shadow: var(--bg-color) 0px -27px 0px 0px;
-    }
-
-    .bg_bubble {
-      position: absolute;
-      border-radius: 50%;
-      transform: translate(-50%, 100%);
-      bottom: $bgBblBottom;
-      width: $bblSize;
-      height: $bblSize;
-      min-width: $minBblSize;
-      max-width: $maxBblSize;
-      min-height: $minBblSize;
-      max-height: $maxBblSize;
-      opacity: 0;
-      will-change: transform, bottom;
-    }
-
-    #bg_bubble_outer {
-      // width: 10vw;
-      // height: 10vw;
-      // min-width: 70px;
-      // max-width: 130px;
-      // min-height: 70px;
-      // max-height: 130px;
-      // box-shadow: #383558 0px 0px 20px 9px;
-      background: #ffa7a7;
-    }
-
-    #bg_bubble_inner {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      box-shadow: #38355800 0px 0px 20px 10px;
-      background: #f4c0c0;
-
-      #bg_icon {
-        color: black;
-      }
-    }
-  }
+.bg_icon {
+  display: flex;
 }
 
 .active-page {

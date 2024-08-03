@@ -1,5 +1,5 @@
 <nav>
-  <div id="menuWrapper">
+  <div class="menuWrapper">
     @for (icon of Icons; track $index) {
       <mat-icon
         #m_icon
@@ -11,12 +11,15 @@
       </mat-icon>
     }
   </div>
-  <div id="bgWrapper">
-    <div id="bg"></div>
-    <div id="bg_bubble_outer" class="bg_bubble"></div>
-    <div id="bg_bubble_inner" class="bg_bubble">
-      <span id="bg_icon">
-        <mat-icon class="active-page" aria-hidden="false" [fontIcon]="Icons[navSrc.CurrentPage]">
+  <div class="bgWrapper">
+    <div class="bg"></div>
+    <div class="bg_bubble_outer bg_bubble"></div>
+    <div class="bg_bubble_inner bg_bubble">
+      <span class="bg_icon">
+        <mat-icon
+          class="active-page"
+          aria-hidden="false"
+          [fontIcon]="Icons[navSrc.CurrentPage]">
         </mat-icon>
       </span>
     </div>

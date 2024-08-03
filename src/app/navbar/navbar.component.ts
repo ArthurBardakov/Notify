@@ -40,10 +40,10 @@ export class NavBarComponent {
       .timeline({ delay: 0.5 })
       .set(`#m_icon${defaultIcon}`, { opacity: 0 }, 0)
       .set('.bg_bubble', { x: iconCenter, opacity: 1 }, 0)
-      .to('#bg_bubble_outer', { y: '10%', ease: 'back.inOut(3)', duration: 1 }, 0)
-      .to('#bg_bubble_inner', { y: this.bblTranslateY, ease: 'back.inOut(3)', duration: 1 }, 0)
+      .to('.bg_bubble_outer', { y: '10%', ease: 'back.inOut(3)', duration: 1 }, 0)
+      .to('.bg_bubble_inner', { y: this.bblTranslateY, ease: 'back.inOut(3)', duration: 1 }, 0)
       .to(
-        '#bg_bubble_inner',
+        '.bg_bubble_inner',
         {
           boxShadow: `${bgColor} 0px 0px 20px 9px`,
           ease: 'back.in(2)',
@@ -51,7 +51,6 @@ export class NavBarComponent {
         },
         0,
       );
-    // .to('#bg_bubble_outer', { boxShadow: '#38355800 0px 0px 20px 9px', ease: 'back.in(2)', duration: 1 }, 0);
   }
 
   public SwitchBubble(page: number): void {
@@ -63,10 +62,8 @@ export class NavBarComponent {
       .to(`#m_icon${this.navSrc.PrevPage}`, { opacity: 1, duration: 0.2 }, 0)
       .to(`#m_icon${this.navSrc.CurrentPage}`, { opacity: 0, duration: 0.2 }, 0)
       .to('.bg_bubble', { x: iconCenter, ease: this.bblEase, duration: 0.4 }, 0)
-      // .to('#bg_bubble_inner', { boxShadow: '#383558 0px 0px 10px 7px', duration: 0.2 }, 0)
-      .to('#bg_bubble_inner', { translateY: '-40px', ease: this.bblEase, duration: 0.2 }, 0)
-      .to('#bg_bubble_inner', { translateY: this.bblTranslateY, duration: 0.4 }, '>');
-    // .to('#bg_bubble_inner', { boxShadow: '#383558 0px 0px 20px 13px', duration: 0.4 }, '-=0.1');
+      .to('.bg_bubble_inner', { translateY: '-40px', ease: this.bblEase, duration: 0.2 }, 0)
+      .to('.bg_bubble_inner', { translateY: this.bblTranslateY, duration: 0.4 }, '>');
   }
 
   private iconCenter(page: number): number {
