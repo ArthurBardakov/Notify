@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection, isDevMode, importProvidersFrom, Injectable } from '@angular/core';
+import { ApplicationConfig, isDevMode, importProvidersFrom, Injectable, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -16,7 +16,7 @@ export class MyHammerConfig extends HammerGestureConfig {
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideExperimentalZonelessChangeDetection(),
     provideRouter(routes),
     provideAnimationsAsync(),
     importProvidersFrom(HammerModule),
