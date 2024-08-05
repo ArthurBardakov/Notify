@@ -1,6 +1,5 @@
-$bblSize: 9vw;
-$minBblSize: 55px;
-$maxBblSize: 120px;
+$bblSize: 3.4rem;
+$buttonColor: var(--mat-secondary-80);
 
 nav {
   position: relative;
@@ -36,20 +35,18 @@ nav {
 .bg_bubble {
   position: absolute;
   border-radius: 50%;
-  transform: translate(-50%, 100%);
-  bottom: -72%;
+  translate: -50% 100%;
+  bottom: -74%;
   width: $bblSize;
   height: $bblSize;
-  min-width: $minBblSize;
-  max-width: $maxBblSize;
-  min-height: $minBblSize;
-  max-height: $maxBblSize;
   opacity: 0;
   will-change: transform, bottom;
 }
 
 .bg_bubble_outer {
-  background: #ffa7a7;
+  --inner-button-color: #f4c0c06e;
+  background: var(--inner-button-color);
+  box-shadow: 0px 10px 5px 0px var(--inner-button-color);
 }
 
 .bg_bubble_inner {
@@ -58,13 +55,17 @@ nav {
   justify-content: center;
   opacity: 0;
   box-shadow: #38355800 0px 0px 20px 10px;
-  background: #f4c0c0;
+  background: $buttonColor;
 }
 
 .bg_icon {
   display: flex;
 }
 
+mat-icon {
+  color: $buttonColor;
+}
+
 .active-page {
-  filter: invert(1);
+  color: var(--mat-primary-100);
 }

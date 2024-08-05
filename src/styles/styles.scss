@@ -1,8 +1,13 @@
 @use '@angular/material' as mat;
-@use './m3-theme';
+@use './m3-theme' as m3-theme;
+@use './palettes' as p;
+@use 'mixins' as m;
 
 :root {
   @include mat.all-component-themes(m3-theme.$light-theme);
+  @include mat.system-level-colors(m3-theme.$light-theme);
+  @include mat.system-level-typography(m3-theme.$light-theme);
+  @include m.define-css-variables(p.$palettes);
   --bg-color: #{mat.get-theme-color(m3-theme.$light-theme, primary, 98)};
 }
 

@@ -1,0 +1,7 @@
+@mixin define-css-variables($palettes) {
+    @each $name, $palette in $palettes {
+      @each $key, $color in $palette {
+        --mat-#{$name}-#{$key}: #{$color};
+      }
+    }
+}
