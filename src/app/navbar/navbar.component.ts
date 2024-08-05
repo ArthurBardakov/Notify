@@ -30,12 +30,12 @@ export class NavBarComponent {
     effect(() => {
       let canSwipeLeft = this.currentPage < this.Icons.length - 1;
       canSwipeLeft = !!this.swipeLeft() && canSwipeLeft;
-      if (canSwipeLeft) this.SwitchBubble(this.currentPage + 1);
+      if (canSwipeLeft) this.switchBubble(this.currentPage + 1);
     });
 
     effect(() => {
       const canSwipeRight = !!this.swipeRight() && this.currentPage > 0;
-      if (canSwipeRight) this.SwitchBubble(this.currentPage - 1);
+      if (canSwipeRight) this.switchBubble(this.currentPage - 1);
     });
   }
 
@@ -55,15 +55,14 @@ export class NavBarComponent {
         '.bg_bubble_inner',
         {
           boxShadow: `${bgColor} 0px 0px 20px 9px`,
-          ease: 'back.in(2)',
-          duration: 0.95,
+          duration: 1,
         },
         0,
       )
       .set(`#m_icon${defaultIcon}`, { opacity: 0 }, 1);
   }
 
-  public SwitchBubble(page: number): void {
+  public switchBubble(page: number): void {
     this.swapPages(page);
     const iconCenter = this.iconCenter(page);
     const bblEase = 'power2.out';
