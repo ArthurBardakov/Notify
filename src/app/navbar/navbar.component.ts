@@ -1,6 +1,5 @@
-import { Component, viewChildren } from '@angular/core';
+import { Component, effect, input, viewChildren } from '@angular/core';
 import gsap from 'gsap';
-import { NavigationService } from '../shared/services/navigation.service';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -11,34 +10,44 @@ import { MatIcon, MatIconModule } from '@angular/material/icon';
   imports: [MatIconModule],
 })
 export class NavBarComponent {
+  public readonly swipeLeft = input.required<HammerInput | undefined>();
+  public readonly swipeRight = input.required<HammerInput | undefined>();
   private readonly mIcons = viewChildren(MatIcon);
-  private readonly bblEase = 'power2.out';
-  private bblTranslateY = '-5%';
+  private readonly bblTranslateY = '-5%';
+  protected currentPage = 2;
+  private prevPage = -1;
   public readonly Icons = [
     'menu_open',
     'bookmark',
     'add_circle',
     'notifications',
     'account_circle',
-  ];
+  ] as const;
 
-  constructor(public navSrc: NavigationService) {
-    this.navSrc.TotalPages = this.Icons.length;
-    this.navSrc.CurrentPage = 2;
-    this.navSrc.PageSwipe.subscribe((page: number) => this.SwitchBubble(page));
+  constructor() {
     queueMicrotask(() => this.triggerDefaultIcon());
+
+    effect(() => {
+      let canSwipeLeft = this.currentPage < this.Icons.length - 1;
+      canSwipeLeft = !!this.swipeLeft() && canSwipeLeft;
+      if (canSwipeLeft) this.SwitchBubble(this.currentPage + 1);
+    });
+
+    effect(() => {
+      const canSwipeRight = !!this.swipeRight() && this.currentPage > 0;
+      if (canSwipeRight) this.SwitchBubble(this.currentPage - 1);
+    });
   }
 
   private triggerDefaultIcon(): void {
     const bodyElement = document.querySelector('body') as HTMLElement;
     const computedBodyStyles = window.getComputedStyle(bodyElement);
     const bgColor = computedBodyStyles.getPropertyValue('--bg-color');
-    const defaultIcon = this.navSrc.CurrentPage;
+    const defaultIcon = this.currentPage;
     const iconCenter = this.iconCenter(defaultIcon);
 
     gsap
       .timeline({ delay: 0.5 })
-      .set(`#m_icon${defaultIcon}`, { opacity: 0 }, 0)
       .set('.bg_bubble', { x: iconCenter, opacity: 1 }, 0)
       .to('.bg_bubble_outer', { y: '10%', ease: 'back.inOut(3)', duration: 1 }, 0)
       .to('.bg_bubble_inner', { y: this.bblTranslateY, ease: 'back.inOut(3)', duration: 1 }, 0)
@@ -50,20 +59,27 @@ export class NavBarComponent {
           duration: 0.95,
         },
         0,
-      );
+      )
+      .set(`#m_icon${defaultIcon}`, { opacity: 0 }, 1);
   }
 
   public SwitchBubble(page: number): void {
-    this.navSrc.SwapPages(page);
+    this.swapPages(page);
     const iconCenter = this.iconCenter(page);
+    const bblEase = 'power2.out';
 
     gsap
       .timeline()
-      .to(`#m_icon${this.navSrc.PrevPage}`, { opacity: 1, duration: 0.2 }, 0)
-      .to(`#m_icon${this.navSrc.CurrentPage}`, { opacity: 0, duration: 0.2 }, 0)
-      .to('.bg_bubble', { x: iconCenter, ease: this.bblEase, duration: 0.4 }, 0)
-      .to('.bg_bubble_inner', { translateY: '-40px', ease: this.bblEase, duration: 0.2 }, 0)
+      .to(`#m_icon${this.prevPage}`, { opacity: 1, duration: 0.2 }, 0)
+      .to(`#m_icon${this.currentPage}`, { opacity: 0, duration: 0.2 }, 0)
+      .to('.bg_bubble', { x: iconCenter, ease: bblEase, duration: 0.4 }, 0)
+      .to('.bg_bubble_inner', { translateY: '-40px', ease: bblEase, duration: 0.2 }, 0)
       .to('.bg_bubble_inner', { translateY: this.bblTranslateY, duration: 0.4 }, '>');
+  }
+
+  private swapPages(page: number) {
+    this.prevPage = this.currentPage;
+    this.currentPage = page;
   }
 
   private iconCenter(page: number): number {
