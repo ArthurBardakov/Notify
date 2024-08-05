@@ -1,6 +1,8 @@
-import { Component, effect, input, viewChildren } from '@angular/core';
+import { Component, effect, input, untracked, viewChildren } from '@angular/core';
 import gsap from 'gsap';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { map, Subject } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-navbar',
@@ -14,6 +16,7 @@ export class NavBarComponent {
   public readonly swipeRight = input.required<HammerInput | undefined>();
   private readonly mIcons = viewChildren(MatIcon);
   private readonly bblTranslateY = '-5%';
+  private readonly swiped$ = new Subject<void>();
   protected currentPage = 2;
   private prevPage = -1;
   public readonly Icons = [
@@ -23,6 +26,10 @@ export class NavBarComponent {
     'notifications',
     'account_circle',
   ] as const;
+
+  protected readonly currentIcon = toSignal(
+    this.swiped$.pipe(map(() => this.Icons[this.currentPage])),
+    { initialValue: this.Icons[this.currentPage] });
 
   constructor() {
     queueMicrotask(() => this.triggerDefaultIcon());
@@ -66,14 +73,15 @@ export class NavBarComponent {
     this.swapPages(page);
     const iconCenter = this.iconCenter(page);
     const bblEase = 'power2.out';
+    untracked(() => this.swiped$.next());
 
     gsap
       .timeline()
       .to(`#m_icon${this.prevPage}`, { opacity: 1, duration: 0.2 }, 0)
       .to(`#m_icon${this.currentPage}`, { opacity: 0, duration: 0.2 }, 0)
       .to('.bg_bubble', { x: iconCenter, ease: bblEase, duration: 0.4 }, 0)
-      .to('.bg_bubble_inner', { translateY: '-40px', ease: bblEase, duration: 0.2 }, 0)
-      .to('.bg_bubble_inner', { translateY: this.bblTranslateY, duration: 0.4 }, '>');
+      .to('.bg_bubble_inner', { y: '-40px', ease: bblEase, duration: 0.2 }, 0)
+      .to('.bg_bubble_inner', { y: this.bblTranslateY, duration: 0.4 }, '>');
   }
 
   private swapPages(page: number) {
