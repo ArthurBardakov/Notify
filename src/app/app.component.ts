@@ -1,6 +1,9 @@
 import { AfterViewInit, Component, ElementRef, signal, viewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavBarComponent } from './navbar/navbar.component';
+import Hammer from 'hammerjs';
+// do not remove the following import - tests complain if it's not there
+import HammerInput from 'hammerjs';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +13,6 @@ import { NavBarComponent } from './navbar/navbar.component';
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements AfterViewInit {
-  public readonly title = 'Notify';
   private readonly contentElement = viewChild.required<ElementRef<HTMLElement>>('content');
   public readonly swipeLeft = signal<HammerInput | undefined>(undefined);
   public readonly swipeRight = signal<HammerInput | undefined>(undefined);

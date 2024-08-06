@@ -33,12 +33,12 @@ describe('NavBarComponent', () => {
   });
 
   it('should switch to the next bubble on swipe left', async () => {
-      component['currentPage'] = 2;
-      fixture.componentRef.setInput('swipeLeft', {} as HammerInput);
-      await fixture.whenStable();
-      expect(component['currentPage']).toBe(3);
-      expect(component['prevPage']).toBe(2);
-      expect(component['currentIcon']()).toBe(component.Icons[3]);
+    component['currentPage'] = 2;
+    fixture.componentRef.setInput('swipeLeft', {} as HammerInput);
+    await fixture.whenStable();
+    expect(component['currentPage']).toBe(3);
+    expect(component['prevPage']).toBe(2);
+    expect(component['currentIcon']()).toBe(component.Icons[3]);
   });
 
   it('should switch to the previous bubble on swipe right', async () => {

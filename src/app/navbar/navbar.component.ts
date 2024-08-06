@@ -31,7 +31,8 @@ export class NavBarComponent implements AfterViewInit {
 
   protected readonly currentIcon = toSignal(
     this.swiped$.pipe(map(() => this.Icons[this.currentPage])),
-    { initialValue: this.Icons[this.currentPage] });
+    { initialValue: this.Icons[this.currentPage] },
+  );
 
   constructor() {
     effect(() => {
@@ -47,7 +48,7 @@ export class NavBarComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.triggerDefaultIcon()
+    this.triggerDefaultIcon();
   }
 
   private triggerDefaultIcon(): void {
