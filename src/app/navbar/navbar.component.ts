@@ -1,8 +1,10 @@
-import { Component, effect, input, untracked, viewChildren } from '@angular/core';
+import { AfterViewInit, Component, effect, input, untracked, viewChildren } from '@angular/core';
 import gsap from 'gsap';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { map, Subject } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
+// do not remove the following import - tests complain if it's not there
+import HammerInput from 'hammerjs';
 
 @Component({
   selector: 'app-navbar',
@@ -11,7 +13,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
   standalone: true,
   imports: [MatIconModule],
 })
-export class NavBarComponent {
+export class NavBarComponent implements AfterViewInit {
   public readonly swipeLeft = input.required<HammerInput | undefined>();
   public readonly swipeRight = input.required<HammerInput | undefined>();
   private readonly mIcons = viewChildren(MatIcon);
@@ -32,8 +34,6 @@ export class NavBarComponent {
     { initialValue: this.Icons[this.currentPage] });
 
   constructor() {
-    queueMicrotask(() => this.triggerDefaultIcon());
-
     effect(() => {
       let canSwipeLeft = this.currentPage < this.Icons.length - 1;
       canSwipeLeft = !!this.swipeLeft() && canSwipeLeft;
@@ -44,6 +44,10 @@ export class NavBarComponent {
       const canSwipeRight = !!this.swipeRight() && this.currentPage > 0;
       if (canSwipeRight) this.switchBubble(this.currentPage - 1);
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.triggerDefaultIcon()
   }
 
   private triggerDefaultIcon(): void {
