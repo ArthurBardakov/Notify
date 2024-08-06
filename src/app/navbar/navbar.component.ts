@@ -1,10 +1,11 @@
 import { AfterViewInit, Component, effect, input, untracked, viewChildren } from '@angular/core';
 import gsap from 'gsap';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
-import { map, Subject } from 'rxjs';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { map, Observable, Subject } from 'rxjs';
+import { outputFromObservable, toObservable, toSignal } from '@angular/core/rxjs-interop';
 // do not remove the following import - tests complain if it's not there
 import HammerInput from 'hammerjs';
+import { MenuIcons } from './icons.enum';
 
 @Component({
   selector: 'app-navbar',
@@ -19,19 +20,20 @@ export class NavBarComponent implements AfterViewInit {
   private readonly mIcons = viewChildren(MatIcon);
   private readonly bblTranslateY = '-5%';
   private readonly swiped$ = new Subject<void>();
+  public readonly Icons = Object.values(MenuIcons);
   protected currentPage = 2;
   private prevPage = -1;
-  public readonly Icons = [
-    'menu_open',
-    'bookmark',
-    'add_circle',
-    'notifications',
-    'account_circle',
-  ] as const;
 
   protected readonly currentIcon = toSignal(
     this.swiped$.pipe(map(() => this.Icons[this.currentPage])),
     { initialValue: this.Icons[this.currentPage] },
+  );
+
+  public readonly currentPageEvent = outputFromObservable(
+    toObservable(this.currentIcon).pipe(
+      map((icon) => Object.entries(MenuIcons).find(([_, value]) => value === icon)?.[1]),
+      map((key) => key as MenuIcons),
+    ) as Observable<MenuIcons>,
   );
 
   constructor() {
