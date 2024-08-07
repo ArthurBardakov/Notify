@@ -4,3 +4,7 @@
   [swipeRight]="swipeRight()"
   (currentPageEvent)="currentPageEvent.set($event)"
 />
+
+@if (isNewNoteEvent()) {
+  <app-new-note />
+}

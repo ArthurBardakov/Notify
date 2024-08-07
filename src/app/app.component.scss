@@ -1,3 +1,7 @@
+:host {
+  display: flex;
+}
+
 .content {
   width: 100%;
   height: calc(100svh - 85px);
@@ -8,4 +12,11 @@ app-navbar {
   width: 100%;
   height: 85px;
   bottom: 0%;
+}
+
+app-new-note {
+  position: absolute;
+  width: 100%;
+  height: 100svh;
+  background-color: var(--bg-color);
 }
