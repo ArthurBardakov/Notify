@@ -9,8 +9,8 @@ import {
 } from '@angular/core';
 import gsap from 'gsap';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
-import { map, Observable, Subject } from 'rxjs';
-import { outputFromObservable, toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { map, Subject } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 // do not remove the following import - tests complain if it's not there
 import HammerInput from 'hammerjs';
 import { MenuIcons } from './icons.enum';
@@ -52,13 +52,6 @@ export class NavBarComponent implements AfterViewInit {
       map(() => this.iconsRoutesMap.find((route) => route.route === this.currentRoute)!.icon),
     ),
     { initialValue: MenuIcons.LIST },
-  );
-
-  public readonly currentPageIcon = outputFromObservable(
-    toObservable(this.currentIcon).pipe(
-      map((icon) => Object.entries(MenuIcons).find(([_, value]) => value === icon)?.[1]),
-      map((key) => key as MenuIcons),
-    ) as Observable<MenuIcons>,
   );
 
   private get currentRouteId(): number {
