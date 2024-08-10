@@ -3,5 +3,5 @@ export enum MenuIcons {
   ACCOUNT = 'account_circle',
   LIST = 'view_list',
   NOTIFICATIONS = 'notifications',
-  ADD_NOTE = 'add_circle',
+  NEW_NOTE = 'add_circle',
 }

@@ -1,12 +1,13 @@
 <nav>
   <div class="menuWrapper">
     @for (icon of Icons; track $index) {
+      @let route = routes[$index].value;
       <mat-icon
         #m_icon
         aria-hidden="false"
-        id="m_icon{{ $index }}"
+        id="m_icon{{ route }}"
         [fontIcon]="icon"
-        (click)="switchBubble($index)"
+        (click)="switchBubble(route)"
       >
       </mat-icon>
     }

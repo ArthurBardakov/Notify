@@ -1,6 +1,11 @@
 $bblSize: 3.4rem;
 $buttonColor: var(--mat-secondary-80);
 
+:host {
+  width: 100%;
+  height: 5rem;
+}
+
 nav {
   position: relative;
   display: flex;
