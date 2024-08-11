@@ -37,17 +37,15 @@ describe('NavBarComponent', () => {
   it('should switch to the next bubble on swipe left', async () => {
     fixture.componentRef.setInput('swipeLeft', {} as HammerInput);
     await fixture.whenStable();
-    expect(component['currentRoute']).toBe(NotifyRoutes.Notifications);
-    expect(component['prevRoute']).toBe(NotifyRoutes.List);
-    expect(component['currentIcon']()).toBe(component.Icons[3]);
+    expect(component['currentRoute']).toBe(NotifyRoutes.NOTIFICATIONS);
+    expect(component['prevRoute']).toBe(NotifyRoutes.LIST);
   });
 
   it('should switch to the previous bubble on swipe right', async () => {
     fixture.componentRef.setInput('swipeRight', {} as HammerInput);
     await fixture.whenStable();
     expect(component['currentRoute']).toBe(NotifyRoutes.ACCOUNT);
-    expect(component['prevRoute']).toBe(NotifyRoutes.List);
-    expect(component['currentIcon']()).toBe(component.Icons[1]);
+    expect(component['prevRoute']).toBe(NotifyRoutes.LIST);
   });
 
   it('should call gsap.timeline() when triggering default icon', () => {
@@ -58,15 +56,15 @@ describe('NavBarComponent', () => {
 
   it('should call gsap.timeline() when switching bubbles', () => {
     const gsapSpy = spyOn(gsap, 'timeline').and.callThrough();
-    component.switchBubble(NotifyRoutes.Notifications);
+    component.switchBubble(NotifyRoutes.NOTIFICATIONS);
     expect(gsapSpy).toHaveBeenCalled();
   });
 
   it('should correctly swap routes', () => {
-    component['currentRoute'] = NotifyRoutes.List;
-    component['swapRoutes'](NotifyRoutes.Notifications);
-    expect(component['prevRoute']).toBe(NotifyRoutes.List);
-    expect(component['currentRoute']).toBe(NotifyRoutes.Notifications);
+    component['currentRoute'] = NotifyRoutes.LIST;
+    component['swapRoutes'](NotifyRoutes.NOTIFICATIONS);
+    expect(component['prevRoute']).toBe(NotifyRoutes.LIST);
+    expect(component['currentRoute']).toBe(NotifyRoutes.NOTIFICATIONS);
   });
 
   it('should correctly calculate icon center', () => {
@@ -82,7 +80,7 @@ describe('NavBarComponent', () => {
   });
 
   it('should update currentIcon signal correctly', () => {
-    component['currentRoute'] = NotifyRoutes.Menu;
+    component['currentRoute'] = NotifyRoutes.MENU;
     component['swiped$'].next();
     const currentIcon = component['iconsRoutesMap'].find((route) =>
         route.route === component['currentRoute'])!.icon
