@@ -69,10 +69,12 @@ export class NavBarComponent implements AfterViewInit {
   }
 
   private triggerBubbleSwitchFromOutside(): void {
-    this.navSrc.toggleNavigationTo.pipe(
-      takeUntilDestroyed(),
-      tap((route) => this.switchBubble(route)))
-    .subscribe();
+    this.navSrc.toggleNavigationTo
+      .pipe(
+        takeUntilDestroyed(),
+        tap((route) => this.switchBubble(route)),
+      )
+      .subscribe();
   }
 
   private registerSwipeLeft(): void {

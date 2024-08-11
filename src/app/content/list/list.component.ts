@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { NotesStore } from '../../state/notes.store';
 
 @Component({
   selector: 'app-list',
@@ -7,4 +8,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
 })
-export class ListComponent {}
+export class ListComponent {
+  public readonly store = inject(NotesStore);
+}

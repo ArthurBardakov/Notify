@@ -1,12 +1,18 @@
-<form class="example-form">
-  <mat-form-field class="example-full-width">
+<form class="note-form">
+  <mat-form-field>
     <mat-label>Note Title</mat-label>
-    <input matInput placeholder="Ex. Send an email" />
+    <input [formControl]="noteTitle" matInput placeholder="Ex. Send an email" />
   </mat-form-field>
 
-  <mat-form-field class="example-full-width comment-field">
+  <mat-form-field class="note-field">
     <mat-label>Leave a note</mat-label>
-    <textarea matInput placeholder="Ex. Let's have a..."></textarea>
+    <textarea
+      [formControl]="noteContent"
+      class="note-textarea"
+      matInput
+      placeholder="Ex. Let's have a..."
+    >
+    </textarea>
   </mat-form-field>
 </form>
 

@@ -6,17 +6,17 @@
   background-color: var(--bg-color);
 }
 
-.example-form {
+.note-form {
   display: flex;
   flex-direction: column;
   height: calc(100svh - 5rem);
 }
 
-.comment-field {
+.note-field {
   flex-grow: 1;
 }
 
-.comment-field textarea {
+.note-textarea {
   height: 100%;
   resize: none;
 }

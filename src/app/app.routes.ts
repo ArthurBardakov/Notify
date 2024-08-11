@@ -9,7 +9,8 @@ export const routes: Routes = [
   },
   {
     path: NotifyRoutes.ACCOUNT,
-    loadComponent: () => import('./content/account/account.component').then((m) => m.AccountComponent),
+    loadComponent: () =>
+      import('./content/account/account.component').then((m) => m.AccountComponent),
   },
   {
     path: NotifyRoutes.LIST,
@@ -17,10 +18,14 @@ export const routes: Routes = [
   },
   {
     path: NotifyRoutes.NOTIFICATIONS,
-    loadComponent: () => import('./content/notifications/notifications.component').then((m) => m.NotificationsComponent),
+    loadComponent: () =>
+      import('./content/notifications/notifications.component').then(
+        (m) => m.NotificationsComponent,
+      ),
   },
   {
     path: NotifyRoutes.NEW_NOTE,
-    loadComponent: () => import('./content/new-note/new-note.component').then((m) => m.NewNoteComponent),
+    loadComponent: () =>
+      import('./content/new-note/new-note.component').then((m) => m.NewNoteComponent),
   },
 ];

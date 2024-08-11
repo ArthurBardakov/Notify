@@ -28,8 +28,9 @@ describe('NavBarComponent', () => {
   });
 
   it('should initialize with the correct default icon', () => {
-    const defaultIcon = component['iconsRoutesMap'].find((route) =>
-        route.route === component['currentRoute'])!.icon
+    const defaultIcon = component['iconsRoutesMap'].find(
+      (route) => route.route === component['currentRoute'],
+    )!.icon;
     const currentIcon = component['currentIcon']();
     expect(currentIcon).toBe(defaultIcon);
   });
@@ -82,8 +83,9 @@ describe('NavBarComponent', () => {
   it('should update currentIcon signal correctly', () => {
     component['currentRoute'] = NotifyRoutes.MENU;
     component['swiped$'].next();
-    const currentIcon = component['iconsRoutesMap'].find((route) =>
-        route.route === component['currentRoute'])!.icon
+    const currentIcon = component['iconsRoutesMap'].find(
+      (route) => route.route === component['currentRoute'],
+    )!.icon;
     expect(component['currentIcon']()).toBe(currentIcon);
   });
 
