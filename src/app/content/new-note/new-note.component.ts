@@ -17,6 +17,6 @@ export class NewNoteComponent {
   private readonly navSrc = inject(NavService);
 
   public goToListPage(): void {
-    this.navSrc.toggleNavigationTo.next(NotifyRoutes.List);
+    this.navSrc.toggleNavigationTo.next(NotifyRoutes.LIST);
   }
 }

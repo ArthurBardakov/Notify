@@ -1,7 +1,7 @@
 export enum NotifyRoutes {
-  Menu = 'menu',
+  MENU = 'menu',
   ACCOUNT = 'account',
-  List = 'list',
-  Notifications = 'notifications',
-  NewNote = 'new-note',
+  LIST = 'list',
+  NOTIFICATIONS = 'notifications',
+  NEW_NOTE = 'new-note',
 }

@@ -36,15 +36,15 @@ export class NavBarComponent implements AfterViewInit {
   public readonly Icons = Object.values(MenuIcons);
 
   protected readonly routes = Object.entries(NotifyRoutes).map(([key, value]) => ({ key, value }));
-  protected currentRoute = NotifyRoutes.List;
+  protected currentRoute = NotifyRoutes.LIST;
   protected prevRoute: NotifyRoutes | undefined = undefined;
 
   protected readonly iconsRoutesMap = [
-    { icon: MenuIcons.MENU, route: NotifyRoutes.Menu },
+    { icon: MenuIcons.MENU, route: NotifyRoutes.MENU },
     { icon: MenuIcons.ACCOUNT, route: NotifyRoutes.ACCOUNT },
-    { icon: MenuIcons.LIST, route: NotifyRoutes.List },
-    { icon: MenuIcons.NOTIFICATIONS, route: NotifyRoutes.Notifications },
-    { icon: MenuIcons.NEW_NOTE, route: NotifyRoutes.NewNote },
+    { icon: MenuIcons.LIST, route: NotifyRoutes.LIST },
+    { icon: MenuIcons.NOTIFICATIONS, route: NotifyRoutes.NOTIFICATIONS },
+    { icon: MenuIcons.NEW_NOTE, route: NotifyRoutes.NEW_NOTE },
   ] as const;
 
   protected readonly currentIcon = toSignal(
@@ -120,7 +120,7 @@ export class NavBarComponent implements AfterViewInit {
     this.swapRoutes(route);
     const iconCenter = this.iconCenter(route);
     const bblEase = 'power2.out';
-    const isNewNoteRoute = route === NotifyRoutes.NewNote;
+    const isNewNoteRoute = route === NotifyRoutes.NEW_NOTE;
     const navigatePosition = isNewNoteRoute ? '-=0.2' : '0';
     this.swiped$.next();
 

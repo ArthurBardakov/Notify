@@ -4,15 +4,19 @@ import { NotifyRoutes } from './shared/enums/routes';
 export const routes: Routes = [
   { path: '', redirectTo: 'list', pathMatch: 'full' },
   {
-    path: NotifyRoutes.Menu,
+    path: NotifyRoutes.MENU,
     loadComponent: () => import('./content/menu/menu.component').then((m) => m.MenuComponent),
   },
   {
-    path: NotifyRoutes.List,
+    path: NotifyRoutes.ACCOUNT,
+    loadComponent: () => import('./content/account/account.component').then((m) => m.AccountComponent),
+  },
+  {
+    path: NotifyRoutes.LIST,
     loadComponent: () => import('./content/list/list.component').then((m) => m.ListComponent),
   },
   {
-    path: NotifyRoutes.NewNote,
+    path: NotifyRoutes.NEW_NOTE,
     loadComponent: () => import('./content/new-note/new-note.component').then((m) => m.NewNoteComponent),
   },
 ];
