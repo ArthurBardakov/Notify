@@ -4,6 +4,7 @@ import { MatIcon } from '@angular/material/icon';
 import { By } from '@angular/platform-browser';
 import gsap from 'gsap';
 import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { NotifyRoutes } from '../shared/enums/routes';
 
 describe('NavBarComponent', () => {
   let component: NavBarComponent;
@@ -27,26 +28,25 @@ describe('NavBarComponent', () => {
   });
 
   it('should initialize with the correct default icon', () => {
-    const defaultIcon = component.Icons[component['currentPage']];
+    const defaultIcon = component['iconsRoutesMap'].find((route) =>
+        route.route === component['currentRoute'])!.icon
     const currentIcon = component['currentIcon']();
     expect(currentIcon).toBe(defaultIcon);
   });
 
   it('should switch to the next bubble on swipe left', async () => {
-    component['currentPage'] = 2;
     fixture.componentRef.setInput('swipeLeft', {} as HammerInput);
     await fixture.whenStable();
-    expect(component['currentPage']).toBe(3);
-    expect(component['prevPage']).toBe(2);
+    expect(component['currentRoute']).toBe(NotifyRoutes.Notifications);
+    expect(component['prevRoute']).toBe(NotifyRoutes.List);
     expect(component['currentIcon']()).toBe(component.Icons[3]);
   });
 
   it('should switch to the previous bubble on swipe right', async () => {
-    component['currentPage'] = 2;
     fixture.componentRef.setInput('swipeRight', {} as HammerInput);
     await fixture.whenStable();
-    expect(component['currentPage']).toBe(1);
-    expect(component['prevPage']).toBe(2);
+    expect(component['currentRoute']).toBe(NotifyRoutes.ACCOUNT);
+    expect(component['prevRoute']).toBe(NotifyRoutes.List);
     expect(component['currentIcon']()).toBe(component.Icons[1]);
   });
 
@@ -58,21 +58,21 @@ describe('NavBarComponent', () => {
 
   it('should call gsap.timeline() when switching bubbles', () => {
     const gsapSpy = spyOn(gsap, 'timeline').and.callThrough();
-    component.switchBubble(3);
+    component.switchBubble(NotifyRoutes.Notifications);
     expect(gsapSpy).toHaveBeenCalled();
   });
 
-  it('should correctly swap pages', () => {
-    component['currentPage'] = 2;
-    component['swapPages'](3);
-    expect(component['prevPage']).toBe(2);
-    expect(component['currentPage']).toBe(3);
+  it('should correctly swap routes', () => {
+    component['currentRoute'] = NotifyRoutes.List;
+    component['swapRoutes'](NotifyRoutes.Notifications);
+    expect(component['prevRoute']).toBe(NotifyRoutes.List);
+    expect(component['currentRoute']).toBe(NotifyRoutes.Notifications);
   });
 
   it('should correctly calculate icon center', () => {
     component['iconCenter'] = jasmine.createSpy().and.callThrough();
-    component.switchBubble(1);
-    expect(component['iconCenter']).toHaveBeenCalledWith(1);
+    component.switchBubble(NotifyRoutes.ACCOUNT);
+    expect(component['iconCenter']).toHaveBeenCalledWith(NotifyRoutes.ACCOUNT);
   });
 
   it('should call triggerDefaultIcon in ngAfterViewInit', () => {
@@ -82,8 +82,11 @@ describe('NavBarComponent', () => {
   });
 
   it('should update currentIcon signal correctly', () => {
+    component['currentRoute'] = NotifyRoutes.Menu;
     component['swiped$'].next();
-    expect(component['currentIcon']()).toBe(component['Icons'][component['currentPage']]);
+    const currentIcon = component['iconsRoutesMap'].find((route) =>
+        route.route === component['currentRoute'])!.icon
+    expect(component['currentIcon']()).toBe(currentIcon);
   });
 
   it('should have mIcons populated after view init', () => {
