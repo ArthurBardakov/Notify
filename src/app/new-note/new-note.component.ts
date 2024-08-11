@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NoteBottomNavbarComponent } from './note-bottom-navbar/note-bottom-navbar.component';
-import { NavbarService } from '../navbar/navbar.service';
+import { NavService } from '../navbar/nav.service';
 import { NotifyRoutes } from '../shared/enums/routes';
 
 @Component({
@@ -14,9 +14,9 @@ import { NotifyRoutes } from '../shared/enums/routes';
   imports: [FormsModule, MatFormFieldModule, MatInputModule, NoteBottomNavbarComponent],
 })
 export class NewNoteComponent {
-  private readonly navSrc = inject(NavbarService);
+  private readonly navSrc = inject(NavService);
 
   public goToListPage(): void {
-    this.navSrc.toggleNavigationTo.set(NotifyRoutes.List);
+    this.navSrc.toggleNavigationTo.next(NotifyRoutes.List);
   }
 }

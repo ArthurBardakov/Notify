@@ -9,14 +9,14 @@ import {
 } from '@angular/core';
 import gsap from 'gsap';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
-import { map, Subject } from 'rxjs';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { map, Subject, tap } from 'rxjs';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 // do not remove the following import - tests complain if it's not there
 import HammerInput from 'hammerjs';
 import { MenuIcons } from './icons.enum';
 import { Router } from '@angular/router';
 import { NotifyRoutes } from '../shared/enums/routes';
-import { NavbarService } from './navbar.service';
+import { NavService } from './nav.service';
 
 @Component({
   selector: 'app-navbar',
@@ -29,7 +29,7 @@ export class NavBarComponent implements AfterViewInit {
   public readonly swipeLeft = input.required<HammerInput | undefined>();
   public readonly swipeRight = input.required<HammerInput | undefined>();
   private readonly router = inject(Router);
-  private readonly navSrc = inject(NavbarService);
+  private readonly navSrc = inject(NavService);
   private readonly mIcons = viewChildren(MatIcon);
   private readonly bblTranslateY = '-5%';
   private readonly swiped$ = new Subject<void>();
@@ -59,29 +59,39 @@ export class NavBarComponent implements AfterViewInit {
   }
 
   constructor() {
-    effect(() => {
-      const route = this.navSrc.toggleNavigationTo();
-      if (!route) return;
-      this.switchBubble(route);
-    });
-
-    effect(() => {
-      const canSwipeLeft = !!this.swipeLeft() && this.currentRouteId < this.routes.length - 1;
-      if (!canSwipeLeft) return;
-      const nextRoute = this.routes[this.currentRouteId + 1].value;
-      this.switchBubble(nextRoute);
-    });
-
-    effect(() => {
-      const canSwipeRight = !!this.swipeRight() && this.currentRouteId > 0;
-      if (!canSwipeRight) return;
-      const prevRoute = this.routes[this.currentRouteId - 1].value;
-      this.switchBubble(prevRoute);
-    });
+    this.triggerBubbleSwitchFromOutside();
+    this.registerSwipeLeft();
+    this.registerSwipeRight();
   }
 
   ngAfterViewInit(): void {
     this.triggerDefaultIcon();
+  }
+
+  private triggerBubbleSwitchFromOutside(): void {
+    this.navSrc.toggleNavigationTo.pipe(
+      takeUntilDestroyed(),
+      tap((route) => this.switchBubble(route)))
+    .subscribe();
+  }
+
+  private registerSwipeLeft(): void {
+    effect(() => {
+      const isLastRoute = this.currentRouteId < this.routes.length - 1;
+      const canSwipeLeft = !!this.swipeLeft() && isLastRoute;
+      if (!canSwipeLeft) return;
+      const nextRoute = this.routes[this.currentRouteId + 1].value;
+      untracked(() => this.switchBubble(nextRoute));
+    });
+  }
+
+  private registerSwipeRight(): void {
+    effect(() => {
+      const canSwipeRight = !!this.swipeRight() && this.currentRouteId > 0;
+      if (!canSwipeRight) return;
+      const prevRoute = this.routes[this.currentRouteId - 1].value;
+      untracked(() => this.switchBubble(prevRoute));
+    });
   }
 
   private triggerDefaultIcon(): void {
@@ -112,7 +122,7 @@ export class NavBarComponent implements AfterViewInit {
     const bblEase = 'power2.out';
     const isNewNoteRoute = route === NotifyRoutes.NewNote;
     const navigatePosition = isNewNoteRoute ? '-=0.2' : '0';
-    untracked(() => this.swiped$.next());
+    this.swiped$.next();
 
     gsap
       .timeline()
