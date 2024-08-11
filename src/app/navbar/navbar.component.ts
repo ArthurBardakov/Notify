@@ -13,7 +13,6 @@ import { map, Subject, tap } from 'rxjs';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 // do not remove the following import - tests complain if it's not there
 import HammerInput from 'hammerjs';
-import { MenuIcons } from './icons.enum';
 import { Router } from '@angular/router';
 import { NotifyRoutes } from '../shared/enums/routes';
 import { NavService } from './nav.service';
@@ -33,26 +32,27 @@ export class NavBarComponent implements AfterViewInit {
   private readonly mIcons = viewChildren(MatIcon);
   private readonly bblTranslateY = '-5%';
   private readonly swiped$ = new Subject<void>();
-  public readonly Icons = Object.values(MenuIcons);
 
   protected readonly routes = Object.entries(NotifyRoutes).map(([key, value]) => ({ key, value }));
   protected currentRoute = NotifyRoutes.LIST;
   protected prevRoute: NotifyRoutes | undefined = undefined;
 
   protected readonly iconsRoutesMap = [
-    { icon: MenuIcons.MENU, route: NotifyRoutes.MENU },
-    { icon: MenuIcons.ACCOUNT, route: NotifyRoutes.ACCOUNT },
-    { icon: MenuIcons.LIST, route: NotifyRoutes.LIST },
-    { icon: MenuIcons.NOTIFICATIONS, route: NotifyRoutes.NOTIFICATIONS },
-    { icon: MenuIcons.NEW_NOTE, route: NotifyRoutes.NEW_NOTE },
+    { icon: 'menu_open', route: NotifyRoutes.MENU },
+    { icon: 'account_circle', route: NotifyRoutes.ACCOUNT },
+    { icon: 'view_list', route: NotifyRoutes.LIST },
+    { icon: 'notifications', route: NotifyRoutes.NOTIFICATIONS },
+    { icon: 'add_circle', route: NotifyRoutes.NEW_NOTE },
   ] as const;
 
   protected readonly currentIcon = toSignal(
-    this.swiped$.pipe(
-      map(() => this.iconsRoutesMap.find((route) => route.route === this.currentRoute)!.icon),
-    ),
-    { initialValue: MenuIcons.LIST },
+    this.swiped$.pipe(map(() => this.getIconByRoute(this.currentRoute))),
+    { initialValue: this.getIconByRoute(NotifyRoutes.LIST) },
   );
+
+  private getIconByRoute(route: NotifyRoutes): string {
+    return this.iconsRoutesMap.find((icon) => icon.route === route)!.icon;
+  }
 
   private get currentRouteId(): number {
     return this.routes.findIndex((route) => route.value === this.currentRoute);
