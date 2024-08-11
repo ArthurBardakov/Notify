@@ -16,6 +16,10 @@ export const routes: Routes = [
     loadComponent: () => import('./content/list/list.component').then((m) => m.ListComponent),
   },
   {
+    path: NotifyRoutes.NOTIFICATIONS,
+    loadComponent: () => import('./content/notifications/notifications.component').then((m) => m.NotificationsComponent),
+  },
+  {
     path: NotifyRoutes.NEW_NOTE,
     loadComponent: () => import('./content/new-note/new-note.component').then((m) => m.NewNoteComponent),
   },
