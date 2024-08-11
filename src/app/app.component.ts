@@ -4,7 +4,7 @@ import Hammer from 'hammerjs';
 // do not remove the following import - tests complain if it's not there
 import HammerInput from 'hammerjs';
 import { MenuIcons } from './navbar/icons.enum';
-import { NewNoteComponent } from './new-note/new-note.component';
+import { NewNoteComponent } from './content/new-note/new-note.component';
 import { NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
 

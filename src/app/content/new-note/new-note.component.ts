@@ -3,8 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NoteBottomNavbarComponent } from './note-bottom-navbar/note-bottom-navbar.component';
-import { NavService } from '../navbar/nav.service';
-import { NotifyRoutes } from '../shared/enums/routes';
+import { NavService } from '../../navbar/nav.service';
+import { NotifyRoutes } from '../../shared/enums/routes';
 
 @Component({
   selector: 'app-new-note',
