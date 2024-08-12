@@ -24,13 +24,16 @@ export const NotesStore = signalStore(
         return notes();
       }
       return notes().filter((note) =>
-        note.title.toLowerCase().includes(filter.query().toLowerCase()),
+        note.title?.toLowerCase().includes(filter.query().toLowerCase()),
       );
     }),
   })),
   withMethods((store) => ({
     updateQuery(query: string): void {
       patchState(store, (state) => ({ filter: { ...state.filter, query } }));
+    },
+    getNoteById: (noteId: string): Note | undefined => {
+      return store.notes().find(note => note.id === noteId);
     },
     addNote: (note: Note) => {
       patchState(store, (state) => {
@@ -48,6 +51,19 @@ export const NotesStore = signalStore(
     deleteNote: (noteId: string) => {
       patchState(store, (state) => {
         const updatedNotes = state.notes.filter((note) => note.id !== noteId);
+
+        // Update local storage
+        localStorage.setItem('notes', JSON.stringify(updatedNotes));
+
+        return {
+          ...state,
+          notes: updatedNotes,
+        };
+      });
+    },
+    updateNote: (note: Note) => {
+      patchState(store, (state) => {
+        const updatedNotes = state.notes.map((n) => (n.id === note.id ? note : n));
 
         // Update local storage
         localStorage.setItem('notes', JSON.stringify(updatedNotes));
