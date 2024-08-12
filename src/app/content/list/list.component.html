@@ -1,1 +1,12 @@
-<h1>Notes ({{ store.notesCount() }})</h1>
+@for (note of store.notes(); track note.id) {
+    <div class="note">
+        <div class="note-header">
+            <h3>{{ note.title }}</h3>
+            <button (click)="store.deleteNote(note.id)">Delete</button>
+        </div>
+        <p>{{ note.content }}</p>
+    </div>
+}
+@empty {
+    <p>No notes found</p>
+}
