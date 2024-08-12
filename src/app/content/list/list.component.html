@@ -1,10 +1,15 @@
 @for (note of store.notes(); track note.id) {
-    <div class="note">
-        <div class="note-header">
-            <h3>{{ note.title }}</h3>
-            <button (click)="store.deleteNote(note.id)">Delete</button>
+    <div class="note" (click)="goToNote(note.id)">
+        <div class="note-content">
+            <h1>{{ note.title }}</h1>
+            <p>{{ note.content }}</p>
         </div>
-        <p>{{ note.content }}</p>
+        <mat-icon
+            class="delete-note-icon"
+            aria-hidden="false"
+            (click)="store.deleteNote(note.id)">
+            delete
+        </mat-icon>
     </div>
 }
 @empty {
