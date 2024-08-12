@@ -1,4 +1,4 @@
-import { Component, output } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -8,6 +8,4 @@ import { MatIconModule } from '@angular/material/icon';
   standalone: true,
   imports: [MatIconModule],
 })
-export class NoteBottomNavbarComponent {
-  public readonly backClicked = output<void>();
-}
+export class NoteBottomNavbarComponent {}
