@@ -34,7 +34,8 @@ export class NavBarComponent implements AfterViewInit {
   private readonly swiped$ = new Subject<void>();
 
   protected readonly routes = Object.entries(NotifyRoutes).map(([key, value]) => ({ key, value }));
-  protected currentRoute = NotifyRoutes.LIST;
+  protected currentRoute = Object.values(NotifyRoutes)
+    .find((route) => location.pathname.endsWith(route)) ?? NotifyRoutes.LIST;
   protected prevRoute: NotifyRoutes | undefined = undefined;
 
   protected readonly iconsRoutesMap = [
@@ -45,14 +46,15 @@ export class NavBarComponent implements AfterViewInit {
     { icon: 'add_circle', route: NotifyRoutes.NEW_NOTE },
   ] as const;
 
-  protected readonly currentIcon = toSignal(
-    this.swiped$.pipe(map(() => this.getIconByRoute(this.currentRoute))),
-    { initialValue: this.getIconByRoute(NotifyRoutes.LIST) },
-  );
-
   private getIconByRoute(route: NotifyRoutes): string {
     return this.iconsRoutesMap.find((icon) => icon.route === route)!.icon;
   }
+
+  protected readonly currentIcon = toSignal(
+    this.swiped$.pipe(map(() => this.getIconByRoute(this.currentRoute))),
+    { initialValue: this.getIconByRoute(this.currentRoute) },
+  );
+
 
   private get currentRouteId(): number {
     return this.routes.findIndex((route) => route.value === this.currentRoute);
@@ -122,8 +124,6 @@ export class NavBarComponent implements AfterViewInit {
     this.swapRoutes(route);
     const iconCenter = this.iconCenter(route);
     const bblEase = 'power2.out';
-    const isNewNoteRoute = route === NotifyRoutes.NEW_NOTE;
-    const navigatePosition = isNewNoteRoute ? '-=0.2' : '0';
     this.swiped$.next();
 
     gsap
@@ -133,7 +133,7 @@ export class NavBarComponent implements AfterViewInit {
       .to('.bg_bubble', { x: iconCenter, ease: bblEase, duration: 0.4 }, 0)
       .to('.bg_bubble_inner', { y: '-40px', ease: bblEase, duration: 0.2 }, 0)
       .to('.bg_bubble_inner', { y: this.bblTranslateY, duration: 0.4 }, '>')
-      .to(this, { onStart: () => this.navigateTo(route) }, navigatePosition);
+      .to(this, { onStart: () => this.navigateTo(route) }, 0);
   }
 
   private swapRoutes(route: NotifyRoutes) {
