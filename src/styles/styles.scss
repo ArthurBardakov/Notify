@@ -8,12 +8,36 @@
   box-sizing: border-box;
 }
 
+:root {
+    /* Space 3xs: 4px → 10px */
+    --space-3xs: clamp(0.25rem, 0.1438rem + 0.531vw, 0.625rem);
+    /* Space 2xs: 8px → 20px */
+    --space-2xs: clamp(0.5rem, 0.2876rem + 1.0619vw, 1.25rem);
+    /* Space xs: 12px → 30px */
+    --space-xs: clamp(0.75rem, 0.4314rem + 1.5929vw, 1.875rem);
+    /* Space s: 16px → 40px */
+    --space-s: clamp(1rem, 0.5752rem + 2.1239vw, 2.5rem);
+    /* Space m: 24px → 60px */
+    --space-m: clamp(1.5rem, 0.8628rem + 3.1858vw, 3.75rem);
+    /* Space l: 32px → 80px */
+    --space-l: clamp(2rem, 1.1504rem + 4.2478vw, 5rem);
+    /* Space xl: 48px → 120px */
+    --space-xl: clamp(3rem, 1.7257rem + 6.3717vw, 7.5rem);
+    /* Space 2xl: 64px → 160px */
+    --space-2xl: clamp(4rem, 2.3009rem + 8.4956vw, 10rem);
+    /* Space 3xl: 96px → 240px */
+    --space-3xl: clamp(6rem, 3.4513rem + 12.7434vw, 15rem);
+}
+
+p {
+  font-size: 1.4rem;
+  line-height: 1.6;
+}
+
 body {
   background-color: var(--bg-color);
 }
 
 .content > * {
-  width: 100%;
-  height: 100%;
-  position: absolute;
+  position: relative;
 }
