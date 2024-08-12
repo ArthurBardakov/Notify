@@ -3,8 +3,10 @@
 }
 
 .content {
+  display: block;
   width: 100%;
   height: calc(100svh - 5rem);
+  padding: var(--space-xs);
 }
 
 app-navbar {
