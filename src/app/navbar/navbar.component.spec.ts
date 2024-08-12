@@ -28,6 +28,7 @@ describe('NavBarComponent', () => {
   });
 
   it('should initialize with the correct default icon', () => {
+    component['currentRoute'] = NotifyRoutes.LIST;
     const defaultIcon = component['iconsRoutesMap'].find(
       (route) => route.route === component['currentRoute'],
     )!.icon;
@@ -36,6 +37,7 @@ describe('NavBarComponent', () => {
   });
 
   it('should switch to the next bubble on swipe left', async () => {
+    component['currentRoute'] = NotifyRoutes.LIST;
     fixture.componentRef.setInput('swipeLeft', {} as HammerInput);
     await fixture.whenStable();
     expect(component['currentRoute']).toBe(NotifyRoutes.NOTIFICATIONS);
@@ -43,6 +45,7 @@ describe('NavBarComponent', () => {
   });
 
   it('should switch to the previous bubble on swipe right', async () => {
+    component['currentRoute'] = NotifyRoutes.LIST;
     fixture.componentRef.setInput('swipeRight', {} as HammerInput);
     await fixture.whenStable();
     expect(component['currentRoute']).toBe(NotifyRoutes.ACCOUNT);
