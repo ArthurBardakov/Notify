@@ -1,4 +1,4 @@
-import { Component, effect, HostListener, inject, OnDestroy, untracked } from '@angular/core';
+import { Component, effect, HostListener, inject, input, OnDestroy, OnInit, untracked } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -16,13 +16,14 @@ import { Note } from '../../shared/models/note';
   standalone: true,
   imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, NoteBottomNavbarComponent],
 })
-export class NewNoteComponent implements OnDestroy {
+export class NewNoteComponent implements OnInit, OnDestroy {
+  protected readonly noteId = input<string | undefined>(undefined ,{ alias: 'id' });
   private readonly store = inject(NotesStore);
   private readonly nonNullBuilder = inject(NonNullableFormBuilder);
   public readonly noteTitle = this.nonNullBuilder.control('');
   public readonly noteContent = this.nonNullBuilder.control('');
   
-  private readonly currentNote: Note = {
+  private currentNote: Note = {
     id: uuidv4(),
     title: '',
     content: '',
@@ -33,12 +34,11 @@ export class NewNoteComponent implements OnDestroy {
   private readonly noteUpdated = toSignal(merge(
     this.noteTitle.valueChanges,
     this.noteContent.valueChanges));
-
+  
   constructor() {
-    this.store.addNote(this.currentNote);
     this.setupNoteUpdate();
   }
-
+  
   private setupNoteUpdate(): void {
     effect(() => {
       this.noteUpdated();
@@ -47,6 +47,16 @@ export class NewNoteComponent implements OnDestroy {
       this.currentNote.updatedAt = new Date();
       untracked(() => this.store.updateNote(this.currentNote));
     });
+  }
+
+  ngOnInit(): void {
+    if (this.noteId()) {
+      const storeNote = this.store.getNoteById(this.noteId()!);
+      if (!storeNote) throw new Error('Note not found');
+      this.currentNote = storeNote;
+      this.noteTitle.setValue(storeNote.title || '');
+      this.noteContent.setValue(storeNote.content || '');
+    } else this.store.addNote(this.currentNote);
   }
 
   @HostListener('window:beforeunload')
