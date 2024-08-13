@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { NotesStore } from '../../state/notes.store';
 import { MatIconModule } from '@angular/material/icon';
-import { Router } from '@angular/router';
 import { NotifyRoutes } from '../../shared/enums/routes';
+import { NavService } from '../../navbar/nav.service';
 
 @Component({
   selector: 'app-list',
@@ -13,9 +13,11 @@ import { NotifyRoutes } from '../../shared/enums/routes';
 })
 export class ListComponent {
   public readonly store = inject(NotesStore);
-  private readonly router = inject(Router);
+  private readonly navSrc = inject(NavService);
 
   protected goToNote(noteId: string): void {
-    this.router.navigate(['/' + NotifyRoutes.NEW_NOTE], { queryParams: { id: noteId } });
+    this.navSrc.toggleNavigationTo.next({
+      route: NotifyRoutes.NEW_NOTE,
+      extras: { queryParams: { id: noteId } } });
   }
 }

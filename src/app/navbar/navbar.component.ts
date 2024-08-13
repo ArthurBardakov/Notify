@@ -13,7 +13,7 @@ import { map, Subject, tap } from 'rxjs';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 // do not remove the following import - tests complain if it's not there
 import HammerInput from 'hammerjs';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { NotifyRoutes } from '../shared/enums/routes';
 import { NavService } from './nav.service';
 
@@ -74,7 +74,7 @@ export class NavBarComponent implements AfterViewInit {
     this.navSrc.toggleNavigationTo
       .pipe(
         takeUntilDestroyed(),
-        tap((route) => this.switchBubble(route)),
+        tap((nav) => this.switchBubble(nav.route, nav.extras)),
       )
       .subscribe();
   }
@@ -120,11 +120,12 @@ export class NavBarComponent implements AfterViewInit {
       .set(`#m_icon${this.currentRoute}`, { opacity: 0 }, 1);
   }
 
-  public switchBubble(route: NotifyRoutes): void {
+  public switchBubble(route: NotifyRoutes, extras?: NavigationExtras): void {
     this.swapRoutes(route);
     const iconCenter = this.iconCenter(route);
     const bblEase = 'power2.out';
     this.swiped$.next();
+    this.router.navigate(['/' + route], extras);
 
     gsap
       .timeline()
@@ -132,8 +133,7 @@ export class NavBarComponent implements AfterViewInit {
       .to(`#m_icon${this.currentRoute}`, { opacity: 0, duration: 0.2 }, 0)
       .to('.bg_bubble', { x: iconCenter, ease: bblEase, duration: 0.4 }, 0)
       .to('.bg_bubble_inner', { y: '-40px', ease: bblEase, duration: 0.2 }, 0)
-      .to('.bg_bubble_inner', { y: this.bblTranslateY, duration: 0.4 }, '>')
-      .to(this, { onStart: () => this.navigateTo(route) }, 0);
+      .to('.bg_bubble_inner', { y: this.bblTranslateY, duration: 0.4 }, '>');
   }
 
   private swapRoutes(route: NotifyRoutes) {
@@ -148,9 +148,5 @@ export class NavBarComponent implements AfterViewInit {
     if (!icon) throw new Error('Icon not found');
     const iconRect = icon.getClientRects()[0];
     return iconRect.x + iconRect.width / 2;
-  }
-
-  private navigateTo(route: NotifyRoutes): void {
-    this.router.navigate(['/' + route]);
   }
 }
