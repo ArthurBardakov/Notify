@@ -2,7 +2,7 @@ import { computed } from '@angular/core';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 import { Note } from '../shared/models/note';
 
-type NotesState = {
+interface NotesState {
   notes: Note[];
   isLoading: boolean;
   filter: { query: string };

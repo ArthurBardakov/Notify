@@ -1,5 +1,5 @@
 @for (note of store.notes(); track note.id) {
-    <div class="note" (click)="goToNote(note.id)">
+    <div class="note" (click)="goToNote(note.id)" (keyup.enter)="goToNote(note.id)" tabindex="0">
         <div class="note-content">
             <h1>{{ note.title }}</h1>
             <p>{{ note.content }}</p>
@@ -7,7 +7,9 @@
         <mat-icon
             class="delete-note-icon"
             aria-hidden="false"
-            (click)="store.deleteNote(note.id)">
+            (click)="store.deleteNote(note.id)"
+            (keyup.enter)="store.deleteNote(note.id)"
+            tabindex="0">
             delete
         </mat-icon>
     </div>

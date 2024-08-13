@@ -1,2 +1,8 @@
 node_modules
 dist
+
+# Ignore all files
+*
+
+# Except HTML files
+!*.html
