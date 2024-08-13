@@ -2,6 +2,7 @@
 @use './m3-theme' as m3-theme;
 @use './palettes' as p;
 @use './mixins' as m;
+@use '../app/content/new-note/new-note.override.scss';
 
 :root {
   @include mat.all-component-themes(m3-theme.$light-theme);
