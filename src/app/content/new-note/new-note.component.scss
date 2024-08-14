@@ -1,11 +1,12 @@
 :host {
   display: grid;
+  height: 100%;
 }
 
 .note-form {
   display: flex;
   flex-direction: column;
-  height: calc(100svh - 5rem);
+  height: 100%;
 }
 
 .note-field {
