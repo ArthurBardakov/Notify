@@ -117,10 +117,11 @@ export class NavBarComponent implements AfterViewInit {
         },
         0,
       )
-      .set(`#m_icon${this.currentRoute}`, { opacity: 0 }, 1);
+      .set(`#m_icon${this.currentRoute}`, { opacity: 0 }, "-=0.5");
   }
 
   public switchBubble(route: NotifyRoutes, extras?: NavigationExtras): void {
+    if (route === this.currentRoute) return;
     this.swapRoutes(route);
     const iconCenter = this.iconCenter(route);
     const bblEase = 'power2.out';
