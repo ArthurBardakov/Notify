@@ -15,7 +15,7 @@ import { Note } from '../../shared/models/note';
   imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, NoteBottomNavbarComponent],
 })
 export class NoteComponent implements OnInit, AfterViewInit, OnDestroy {
-  protected readonly noteId = input<string | undefined>(undefined ,{ alias: 'id' });
+  protected readonly noteId = input<string | undefined>(undefined, { alias: 'id' });
   protected readonly noteTextarea = viewChild.required<ElementRef<HTMLTextAreaElement>>('noteTextarea');
   private readonly store = inject(NotesStore);
   private readonly nonNullBuilder = inject(NonNullableFormBuilder);
@@ -60,7 +60,7 @@ export class NoteComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.currentNote.title === this.noteTitle.value &&
         this.currentNote.content === this.noteContent.value) return;
 
-    this.currentNote.updatedAt = new Date();
+    if (this.noteId()) this.currentNote.updatedAt = new Date();
     this.currentNote.title = this.noteTitle.value;
     this.currentNote.content = this.noteContent.value;
     this.store.updateNote(this.currentNote);
