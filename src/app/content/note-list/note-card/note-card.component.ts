@@ -4,13 +4,14 @@ import { NotesStore } from '../../../state/notes.store';
 import { NavService } from '../../../navbar/nav.service';
 import { NotifyRoutes } from '../../../shared/enums/routes';
 import { Note } from '../../../shared/models/note';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-note-card',
     templateUrl: './note-card.component.html',
     styleUrl: './note-card.component.scss',
     standalone: true,
-    imports: [MatIconModule],
+    imports: [MatIconModule, DatePipe],
 })
 export class NoteCardComponent {
     public note = input.required<Note>();

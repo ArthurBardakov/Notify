@@ -1,16 +1,25 @@
 @let noteId = note().id;
+@let hasBeenUpdated = !!note().updatedAt;
 
-<div class="note-card" (click)="goToNote(noteId)" (keyup.enter)="goToNote(noteId)" tabindex="0">
-    <div class="note-card__content">
+<div class="note-card">
+    <div class="note-card__content" (click)="goToNote(noteId)" (keyup.enter)="goToNote(noteId)" tabindex="0">
         <h1 class="note-content-field note-content-field__title">{{ note().title }}</h1>
         <p class="note-content-field note-content-field__content">{{ note().content }}</p>
     </div>
-    <mat-icon
-        class="note-card__delete-icon"
-        aria-hidden="false"
-        (click)="store.deleteNote(noteId)"
-        (keyup.enter)="store.deleteNote(noteId)"
-        tabindex="0">
-        delete
-    </mat-icon>
+    <div class="note-card__footer">
+        <p class="note-card__date">
+            {{
+                (hasBeenUpdated ? "Edited": "Created") + " " +
+                ((hasBeenUpdated ? note().updatedAt : note().createdAt) | date: 'MMM d')
+            }}
+        </p>
+        <mat-icon
+            class="note-card__delete-icon"
+            aria-hidden="false"
+            (click)="store.deleteNote(noteId)"
+            (keyup.enter)="store.deleteNote(noteId)"
+            tabindex="0">
+            delete
+        </mat-icon>
+    </div>
 </div>
