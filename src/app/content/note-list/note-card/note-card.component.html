@@ -10,7 +10,7 @@
         <p class="note-card__date">
             {{
                 (hasBeenUpdated ? "Edited": "Created") + " " +
-                ((hasBeenUpdated ? note().updatedAt : note().createdAt) | date: 'MMM d')
+                ((hasBeenUpdated ? note().updatedAt : note().createdAt) | date: 'h:mm a')
             }}
         </p>
         <mat-icon
