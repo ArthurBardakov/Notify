@@ -23,6 +23,7 @@ function getNotesFromLocalStorage(): Note[] {
     ...note,
     createdAt: new Date(note.createdAt),
     updatedAt: note.updatedAt ? new Date(note.updatedAt) : undefined,
+    deletedAt: note.deletedAt ? new Date(note.deletedAt) : undefined,
   }));
 }
 
