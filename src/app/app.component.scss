@@ -7,7 +7,7 @@ $navbar-height: 4rem;
 .content {
   display: block;
   width: 100%;
-  height: calc(100svh - #{$navbar-height} - var(--space-xs));
+  height: calc(100svh - #{$navbar-height});
   padding: var(--space-xs);
   overflow-y: scroll;
 }
