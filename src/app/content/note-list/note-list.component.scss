@@ -3,7 +3,7 @@
   gap: var(--space-xs);
 }
 
-.note {
+.note-card {
   display: grid;
   gap: var(--space-2xs);
   border-radius: var(--space-2xs);
@@ -12,7 +12,7 @@
   cursor: pointer;
 }
 
-.note-content {
+.note-card__content {
   display: grid;
   gap: var(--space-2xs);
 }
@@ -35,7 +35,7 @@
   line-clamp: 4;
 }
 
-.delete-note-icon {
+.note-card__delete-icon {
   justify-self: flex-end;
   color: var(--mat-neutral-50);
 }
