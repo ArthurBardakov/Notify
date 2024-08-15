@@ -5,7 +5,7 @@ import { NotifyRoutes } from '../../shared/enums/routes';
 import { NavService } from '../../navbar/nav.service';
 
 @Component({
-  selector: 'app-list',
+  selector: 'app-note-list',
   templateUrl: './note-list.component.html',
   styleUrl: './note-list.component.scss',
   standalone: true,

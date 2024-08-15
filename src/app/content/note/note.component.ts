@@ -10,7 +10,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { Note } from '../../shared/models/note';
 
 @Component({
-  selector: 'app-new-note',
+  selector: 'app-note',
   templateUrl: './note.component.html',
   styleUrl: './note.component.scss',
   standalone: true,
