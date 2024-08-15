@@ -1,12 +1,10 @@
-import { AfterViewInit, Component, effect, ElementRef, HostListener, inject, input, OnDestroy, OnInit, untracked, viewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, inject, input, OnDestroy, OnInit, viewChild } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NoteBottomNavbarComponent } from './note-bottom-navbar/note-bottom-navbar.component';
 import { NotesStore } from '../../state/notes.store';
 import { v4 as uuidv4 } from 'uuid';
-import { merge } from 'rxjs';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { Note } from '../../shared/models/note';
 
 @Component({
@@ -30,25 +28,8 @@ export class NoteComponent implements OnInit, AfterViewInit, OnDestroy {
     content: '',
     createdAt: new Date(),
     updatedAt: undefined,
+    deletedAt: undefined,
   };
-
-  private readonly noteUpdated = toSignal(merge(
-    this.noteTitle.valueChanges,
-    this.noteContent.valueChanges));
-  
-  constructor() {
-    this.setupNoteUpdate();
-  }
-  
-  private setupNoteUpdate(): void {
-    effect(() => {
-      this.noteUpdated();
-      this.currentNote.title = this.noteTitle.value;
-      this.currentNote.content = this.noteContent.value;
-      this.currentNote.updatedAt = new Date();
-      untracked(() => this.store.updateNote(this.currentNote));
-    });
-  }
 
   ngOnInit(): void {
     if (this.noteId()) {
@@ -59,19 +40,30 @@ export class NoteComponent implements OnInit, AfterViewInit, OnDestroy {
       this.noteContent.setValue(storeNote.content || '');
     } else this.store.addNote(this.currentNote);
   }
-
-  @HostListener('window:beforeunload')
-  public onBeforeUnload(): void {
-    this.cleanupEmptyNote();
-  }
-
+  
   ngAfterViewInit(): void {
     const contentElement = this.noteTextarea().nativeElement;
     new Hammer(contentElement);
   }
 
+  @HostListener('window:beforeunload')
+  public onBeforeUnload(): void {
+    this.ngOnDestroy();
+  }
+
   ngOnDestroy(): void {
+    this.updateNoteIfChanged();
     this.cleanupEmptyNote();
+  }
+
+  private updateNoteIfChanged(): void {
+    if (this.currentNote.title === this.noteTitle.value &&
+        this.currentNote.content === this.noteContent.value) return;
+
+    this.currentNote.updatedAt = new Date();
+    this.currentNote.title = this.noteTitle.value;
+    this.currentNote.content = this.noteContent.value;
+    this.store.updateNote(this.currentNote);
   }
 
   private cleanupEmptyNote(): void {
