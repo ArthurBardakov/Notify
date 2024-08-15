@@ -5,7 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { NoteBottomNavbarComponent } from './note-bottom-navbar/note-bottom-navbar.component';
 import { NotesStore } from '../../state/notes.store';
 import { v4 as uuidv4 } from 'uuid';
-import { Note } from '../../shared/models/note';
+import { Note } from '../../shared/interfaces/note';
 
 @Component({
   selector: 'app-note',
