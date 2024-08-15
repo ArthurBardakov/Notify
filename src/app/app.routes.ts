@@ -26,7 +26,7 @@ export const routes: Routes = [
   {
     path: NotifyRoutes.NEW_NOTE,
     loadComponent: () =>
-      import('./content/new-note/new-note.component').then((m) => m.NewNoteComponent),
+      import('./content/note/note.component').then((m) => m.NoteComponent),
   },
   { path: '**', redirectTo: NotifyRoutes.LIST },
 ];

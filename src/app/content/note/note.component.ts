@@ -11,12 +11,12 @@ import { Note } from '../../shared/models/note';
 
 @Component({
   selector: 'app-new-note',
-  templateUrl: './new-note.component.html',
-  styleUrl: './new-note.component.scss',
+  templateUrl: './note.component.html',
+  styleUrl: './note.component.scss',
   standalone: true,
   imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, NoteBottomNavbarComponent],
 })
-export class NewNoteComponent implements OnInit, OnDestroy {
+export class NoteComponent implements OnInit, OnDestroy {
   protected readonly noteId = input<string | undefined>(undefined ,{ alias: 'id' });
   private readonly store = inject(NotesStore);
   private readonly nonNullBuilder = inject(NonNullableFormBuilder);

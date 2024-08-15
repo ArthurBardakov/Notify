@@ -3,14 +3,13 @@ import { NavBarComponent } from './navbar/navbar.component';
 import Hammer from 'hammerjs';
 // do not remove the following import - tests complain if it's not there
 import HammerInput from 'hammerjs';
-import { NewNoteComponent } from './content/new-note/new-note.component';
 import { NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterModule, NavBarComponent, NewNoteComponent, NgIf],
+  imports: [RouterModule, NavBarComponent, NgIf],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
