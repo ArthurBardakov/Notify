@@ -1,4 +1,4 @@
-import { Component, effect, HostListener, inject, input, OnDestroy, OnInit, untracked } from '@angular/core';
+import { AfterViewInit, Component, effect, ElementRef, HostListener, inject, input, OnDestroy, OnInit, untracked, viewChild } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -16,8 +16,9 @@ import { Note } from '../../shared/models/note';
   standalone: true,
   imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, NoteBottomNavbarComponent],
 })
-export class NoteComponent implements OnInit, OnDestroy {
+export class NoteComponent implements OnInit, AfterViewInit, OnDestroy {
   protected readonly noteId = input<string | undefined>(undefined ,{ alias: 'id' });
+  protected readonly noteTextarea = viewChild.required<ElementRef<HTMLTextAreaElement>>('noteTextarea');
   private readonly store = inject(NotesStore);
   private readonly nonNullBuilder = inject(NonNullableFormBuilder);
   public readonly noteTitle = this.nonNullBuilder.control('');
@@ -62,6 +63,11 @@ export class NoteComponent implements OnInit, OnDestroy {
   @HostListener('window:beforeunload')
   public onBeforeUnload(): void {
     this.cleanupEmptyNote();
+  }
+
+  ngAfterViewInit(): void {
+    const contentElement = this.noteTextarea().nativeElement;
+    new Hammer(contentElement);
   }
 
   ngOnDestroy(): void {
