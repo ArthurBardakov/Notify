@@ -29,7 +29,7 @@ export class NoteComponent implements OnInit, AfterViewInit, OnDestroy {
     title: '',
     content: '',
     createdAt: new Date(),
-    updatedAt: null,
+    updatedAt: undefined,
   };
 
   private readonly noteUpdated = toSignal(merge(

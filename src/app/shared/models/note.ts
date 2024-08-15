@@ -1,9 +1,9 @@
 export class Note {
   constructor(
     public id: string,
-    public title: string | null,
-    public content: string | null,
+    public title: string | undefined,
+    public content: string | undefined,
     public createdAt: Date,
-    public updatedAt: Date | null = null,
+    public updatedAt: Date | undefined = undefined,
   ) {}
 }

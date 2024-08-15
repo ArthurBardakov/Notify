@@ -9,10 +9,22 @@ interface NotesState {
 };
 
 const initialState: NotesState = {
-  notes: JSON.parse(localStorage.getItem('notes') || '[]'), // Load notes from local storage
+  notes: getNotesFromLocalStorage(),
   isLoading: false,
   filter: { query: '' },
 };
+
+function getNotesFromLocalStorage(): Note[] {
+  const notesJson = localStorage.getItem('notes');
+  if (!notesJson) return [];
+
+  const notes = JSON.parse(notesJson) as Note[];
+  return notes.map(note => ({
+    ...note,
+    createdAt: new Date(note.createdAt),
+    updatedAt: note.updatedAt ? new Date(note.updatedAt) : undefined,
+  }));
+}
 
 export const NotesStore = signalStore(
   { providedIn: 'root' },
