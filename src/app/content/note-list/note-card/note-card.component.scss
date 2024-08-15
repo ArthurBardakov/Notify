@@ -1,0 +1,36 @@
+.note-card {
+  display: grid;
+  gap: var(--space-2xs);
+  border-radius: var(--space-2xs);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  padding: var(--space-xs);
+  cursor: pointer;
+}
+
+.note-card__content {
+  display: grid;
+  gap: var(--space-2xs);
+}
+
+.note-content-field {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+.note-content-field__title {
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+}
+
+.note-content-field__content {
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+}
+
+.note-card__delete-icon {
+  justify-self: flex-end;
+  color: var(--mat-neutral-50);
+}
