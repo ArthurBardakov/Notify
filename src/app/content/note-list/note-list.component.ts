@@ -6,12 +6,12 @@ import { NavService } from '../../navbar/nav.service';
 
 @Component({
   selector: 'app-list',
-  templateUrl: './list.component.html',
-  styleUrl: './list.component.scss',
+  templateUrl: './note-list.component.html',
+  styleUrl: './note-list.component.scss',
   standalone: true,
   imports: [MatIconModule],
 })
-export class ListComponent {
+export class NoteListComponent {
   public readonly store = inject(NotesStore);
   private readonly navSrc = inject(NavService);
 

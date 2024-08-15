@@ -14,7 +14,7 @@ export const routes: Routes = [
   },
   {
     path: NotifyRoutes.LIST,
-    loadComponent: () => import('./content/list/list.component').then((m) => m.ListComponent),
+    loadComponent: () => import('./content/note-list/note-list.component').then((m) => m.NoteListComponent),
   },
   {
     path: NotifyRoutes.NOTIFICATIONS,
