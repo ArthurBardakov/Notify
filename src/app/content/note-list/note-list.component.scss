@@ -1,4 +1,21 @@
 :host {
-  display: grid;
-  gap: var(--space-xs);
+    display: grid;
+    gap: var(--space-xs);
+}
+
+.note-card-group {
+    display: grid;
+    gap: var(--space-xs);
+}
+
+.note-card-group-title {
+    margin-bottom: var(--space-s);
+    text-align: center;
+}
+
+.note-card-separator {
+    width: 100%;
+    height: 1px;
+    background-color: var(--mat-neutral-80);
+    margin-block: var(--space-xs);
 }

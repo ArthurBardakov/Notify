@@ -1,5 +1,17 @@
-@for (note of store.notes() | sortNotesByDate; track note.id) {
-    <app-note-card [note]="note"></app-note-card>
+@for (notesGroup of store.notes() | sortNotesByDate | groupByDate; track $index) {
+    <div class="note-card-group">
+        <h2 class="note-card-group-title">
+            {{ notesGroup[0] | date: 'MMMM d, yyyy' }}
+        </h2>
+
+        @for (note of notesGroup[1]; track $index) {
+            <app-note-card [note]="note"></app-note-card>
+        }
+        
+        @if (!$last) {
+            <div class="note-card-separator"></div>
+        }
+    </div>
 }
 @empty {
     <p>No notes found</p>
