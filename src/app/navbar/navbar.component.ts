@@ -126,7 +126,8 @@ export class NavBarComponent implements AfterViewInit {
     const iconCenter = this.iconCenter(route);
     const bblEase = 'power2.out';
     this.swiped$.next();
-    this.router.navigate(['/' + route], extras);
+    this.router.navigate(['/' + route],
+      {replaceUrl: true, ...(extras || {})});
 
     gsap
       .timeline()
