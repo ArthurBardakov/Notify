@@ -3,5 +3,10 @@ app-note {
     .mat-mdc-form-field-infix:has(textarea),
     .mat-mdc-form-field-infix:has(textarea) > textarea {
         height: 100% !important;
+        padding-bottom: 0px;
+    }
+
+    .mat-mdc-form-field-bottom-align {
+        display: none;
     }
 }
