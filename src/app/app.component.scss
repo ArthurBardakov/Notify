@@ -9,8 +9,11 @@ $navbar-height: 4rem;
   width: 100%;
   height: calc(100svh - #{$navbar-height});
   padding: var(--space-xs);
-  padding-bottom: 0px;
   overflow-y: scroll;
+}
+
+.content:has(app-note) {
+  padding-bottom: 0px;
 }
 
 app-navbar {
