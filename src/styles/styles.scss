@@ -3,12 +3,25 @@
 *,
 ::after,
 ::before {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 :root {
+	// fonts
+	// /* Step 5: 25px → 35px */
+	--font-5: clamp(1.5625rem, 0.9375rem + 2.025vw, 2.1875rem);
+	// /* Step -1: 20px → 26px */
+	--font--1: clamp(1.25rem, 0.75rem + 1.62vw, 1.625rem);
+
+	// fonts-line-heights
+	// /* LineH 5: 30px → 40px */
+	--line-height-5: clamp(1.875rem, 0.9375rem + 2.7vw, 2.5rem);
+	// /* LineH -1: 24px → 32px */
+	--line-height--1: clamp(1.5rem, 0.75rem + 2.16vw, 2rem);
+
+	// spaces
     /* Space 3xs: 4px → 10px */
     --space-3xs: clamp(0.25rem, 0.1438rem + 0.531vw, 0.625rem);
     /* Space 2xs: 8px → 20px */
@@ -29,15 +42,26 @@
     --space-3xl: clamp(6rem, 3.4513rem + 12.7434vw, 15rem);
 }
 
-p {
-  font-size: 1.4rem;
-  line-height: 1.6;
+h1 {
+	font-size: var(--font-5);
+	line-height: var(--line-height-5);
+}
+
+p, input, textarea, mat-label {
+	font-size: var(--font--1);
+	line-height: var(--line-height--1);
+}
+
+.mat-mdc-form-field-infix > input,
+.mat-mdc-form-field-infix > textarea {
+	font-size: var(--font--1) !important;
+	line-height: var(--line-height--1) !important;
 }
 
 body {
-  background-color: var(--bg-color);
+	background-color: var(--bg-color);
 }
 
 .content > * {
-  position: relative;
+	position: relative;
 }
