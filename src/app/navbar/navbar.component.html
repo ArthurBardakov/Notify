@@ -1,5 +1,5 @@
 <nav>
-  <div class="menuWrapper">
+  <div class="menu_wrapper">
     @for (item of iconsRoutesMap; track $index) {
       <mat-icon
         #m_icon
@@ -11,14 +11,15 @@
       </mat-icon>
     }
   </div>
-  <div class="bgWrapper">
-    <div class="bg"></div>
-    <div class="bg_bubble_outer bg_bubble"></div>
-    <div class="bg_bubble_inner bg_bubble">
-      <span class="bg_icon">
-        <mat-icon class="active-page" aria-hidden="false" [fontIcon]="currentIcon()"> </mat-icon>
-      </span>
-    </div>
+  <div class="blur_wrapper">
+    <div class="blur_section"></div>
+    <div class="blur_bubble_outer blur_bubble"></div>
+    <div class="blur_bubble_inner blur_bubble"></div>
+  </div>
+  <div class="main_bubble blur_bubble">
+    <span class="main_bubble_icon">
+      <mat-icon class="active-page" aria-hidden="false" [fontIcon]="currentIcon()"> </mat-icon>
+    </span>
   </div>
   <svg width="0" height="0" xmlns="http://www.w3.org/2000/svg">
     <defs>

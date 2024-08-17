@@ -30,7 +30,8 @@ export class NavBarComponent implements AfterViewInit {
   private readonly router = inject(Router);
   private readonly navSrc = inject(NavService);
   private readonly mIcons = viewChildren(MatIcon);
-  private readonly bblTranslateY = '-5%';
+  private readonly mainBubbleY = '-5%';
+  private readonly backBubbleY = '10%';
   private readonly swiped$ = new Subject<void>();
 
   protected readonly routes = Object.entries(NotifyRoutes).map(([key, value]) => ({ key, value }));
@@ -54,7 +55,6 @@ export class NavBarComponent implements AfterViewInit {
     this.swiped$.pipe(map(() => this.getIconByRoute(this.currentRoute))),
     { initialValue: this.getIconByRoute(this.currentRoute) },
   );
-
 
   private get currentRouteId(): number {
     return this.routes.findIndex((route) => route.value === this.currentRoute);
@@ -106,17 +106,10 @@ export class NavBarComponent implements AfterViewInit {
 
     gsap
       .timeline({ delay: 0.5 })
-      .set('.bg_bubble', { x: iconCenter, opacity: 1 }, 0)
-      .to('.bg_bubble_outer', { y: '10%', ease: 'back.inOut(3)', duration: 1 }, 0)
-      .to('.bg_bubble_inner', { y: this.bblTranslateY, ease: 'back.inOut(3)', duration: 1 }, 0)
-      .to(
-        '.bg_bubble_inner',
-        {
-          boxShadow: `${bgColor} 0px 0px 20px 9px`,
-          duration: 1,
-        },
-        0,
-      )
+      .set('.blur_bubble', { x: iconCenter, opacity: 1 }, 0)
+      .to('.blur_bubble_outer', { y: this.backBubbleY, ease: 'back.inOut(3)', duration: 1 }, 0)
+      .to('.blur_bubble_inner, .main_bubble', { y: this.mainBubbleY, ease: 'back.inOut(3)', duration: 1 }, 0)
+      .to('.blur_bubble_inner', { boxShadow: `${bgColor} 0px 0px 20px 9px`, duration: 1, }, 0)
       .set(`#m_icon${this.currentRoute}`, { opacity: 0 }, "-=0.5");
   }
 
@@ -132,9 +125,11 @@ export class NavBarComponent implements AfterViewInit {
       .timeline()
       .to(`#m_icon${this.prevRoute}`, { opacity: 1, duration: 0.2 }, 0)
       .to(`#m_icon${this.currentRoute}`, { opacity: 0, duration: 0.2 }, 0)
-      .to('.bg_bubble', { x: iconCenter, ease: bblEase, duration: 0.4 }, 0)
-      .to('.bg_bubble_inner', { y: '-40px', ease: bblEase, duration: 0.2 }, 0)
-      .to('.bg_bubble_inner', { y: this.bblTranslateY, duration: 0.4 }, '>');
+      .to('.blur_bubble', { x: iconCenter, ease: bblEase, duration: 0.4 }, 0)
+      .to('.blur_bubble_outer', { y: '-35px', ease: bblEase, duration: 0.2 }, 0)
+      .to('.blur_bubble_inner, .main_bubble', { y: '-40px', ease: bblEase, duration: 0.2 }, 0)
+      .to('.blur_bubble_inner, .main_bubble', { y: this.mainBubbleY, duration: 0.4 }, '>')
+      .to('.blur_bubble_outer', { y: this.backBubbleY, duration: 0.4 }, '<');
   }
 
   private swapRoutes(route: NotifyRoutes) {

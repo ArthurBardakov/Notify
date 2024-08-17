@@ -7,7 +7,7 @@ nav {
   height: 100%;
 }
 
-.menuWrapper {
+.menu_wrapper {
   align-self: flex-end;
   position: relative;
   width: 100%;
@@ -17,7 +17,7 @@ nav {
   justify-content: space-around;
 }
 
-.bgWrapper {
+.blur_wrapper {
   position: absolute;
   width: 100%;
   height: 90%;
@@ -26,40 +26,47 @@ nav {
   z-index: -1;
 }
 
-.bg {
+.blur_section {
   background-color: var(--bg-color);
   width: 100%;
   height: 100%;
   margin-top: -3%;
 }
 
-.bg_bubble {
+.blur_bubble {
   position: absolute;
   border-radius: 50%;
-  translate: -50% 100%;
-  bottom: -74%;
   width: $bblSize;
   height: $bblSize;
   opacity: 0;
-  will-change: transform, bottom;
+  will-change: transform, opacity;
 }
 
-.bg_bubble_outer {
+.blur_bubble_outer,
+.blur_bubble_inner {
+  translate: -50% 100%;
+}
+
+.blur_bubble_outer {
   --inner-button-color: #f4c0c06e;
   background: var(--inner-button-color);
   box-shadow: 0px 10px 5px 0px var(--inner-button-color);
 }
 
-.bg_bubble_inner {
+.blur_bubble_inner {
+  background: $buttonColor;
+  box-shadow: 0px 10px 5px 0px var(--inner-button-color);
+}
+
+.main_bubble {
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0;
-  box-shadow: #38355800 0px 0px 20px 10px;
+  translate: -50% 120%;
   background: $buttonColor;
 }
 
-.bg_icon {
+.main_bubble_icon {
   display: flex;
 }
 
