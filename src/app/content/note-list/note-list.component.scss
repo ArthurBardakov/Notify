@@ -1,6 +1,5 @@
 :host {
     display: grid;
-    gap: var(--space-xs);
 }
 
 .note-card-group {
@@ -17,5 +16,6 @@
     width: 100%;
     height: 1px;
     background-color: var(--mat-neutral-80);
-    margin-block: var(--space-xs);
+    margin-top: var(--space-m);
+    margin-bottom: var(--space-s);
 }
