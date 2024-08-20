@@ -1,4 +1,8 @@
 @use './overrides.scss';
+@use '@angular/material' as mat;
+@use './m3-theme' as m3-theme;
+@use './palettes' as p;
+@use './mixins' as m;
 
 *,
 ::after,
@@ -9,6 +13,11 @@
 }
 
 :root {
+	@include mat.all-component-themes(m3-theme.$light-theme);
+	@include mat.system-level-colors(m3-theme.$light-theme);
+	@include mat.system-level-typography(m3-theme.$light-theme);
+	@include m.define-css-variables(p.$palettes);
+
 	// fonts
 	// /* Step 5: 25px → 35px */
 	--font-5: clamp(1.5625rem, 0.9375rem + 2.025vw, 2.1875rem);
@@ -47,6 +56,9 @@
 
 	// colors
 	--text-color-dark: var(--mat-primary-40);
+
+	// backgrounds
+	--bg-color: var(--mat-primary-98);
 }
 
 h1 {
