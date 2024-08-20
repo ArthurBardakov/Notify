@@ -55,7 +55,8 @@
     --space-3xl: clamp(6rem, 3.4513rem + 12.7434vw, 15rem);
 
 	// colors
-	--text-color-dark: var(--mat-primary-40);
+	--text-color-dark: var(--mat-neutral-40);
+	--text-color-grey: var(--mat-neutral-70);
 
 	// backgrounds
 	--bg-color: var(--mat-primary-98);
@@ -64,11 +65,13 @@
 h1 {
 	font-size: var(--font-5);
 	line-height: var(--line-height-5);
+	color: var(--text-color-dark);
 }
 
 p, span, input, textarea, mat-label, div[contenteditable] {
 	font-size: var(--font-3);
 	line-height: var(--line-height-3);
+	color: var(--text-color-dark);
 }
 
 .mat-mdc-form-field-infix > input,
