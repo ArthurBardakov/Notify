@@ -73,7 +73,6 @@ export class NoteComponent implements OnInit, OnDestroy {
       },
     });
   }
-  
 
   private setNoteIdWhenNewNote(): void {
     if (this.noteId()) return;
