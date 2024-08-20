@@ -22,4 +22,11 @@ app-note {
         background: var(--mat-primary-90);
         color: var(--text-color-dark);
     }
+
+    .medium-editor-toolbar-actions {
+        display: flex !important;
+        align-items: center;
+        justify-content: space-around;
+        width: 100%;
+    }
 }
