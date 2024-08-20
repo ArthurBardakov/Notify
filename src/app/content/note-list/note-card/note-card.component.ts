@@ -20,7 +20,7 @@ export class NoteCardComponent {
   
     protected goToNote(noteId: string): void {
       this.navSrc.toggleNavigationTo.next({
-        route: NotifyRoutes.NEW_NOTE,
+        route: NotifyRoutes.NOTE,
         extras: { queryParams: { id: noteId } } });
     }
 }

@@ -24,7 +24,7 @@ export const routes: Routes = [
       ),
   },
   {
-    path: NotifyRoutes.NEW_NOTE,
+    path: NotifyRoutes.NOTE,
     loadComponent: () =>
       import('./content/note/note.component').then((m) => m.NoteComponent),
   },

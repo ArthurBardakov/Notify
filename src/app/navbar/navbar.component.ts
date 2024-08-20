@@ -44,7 +44,7 @@ export class NavBarComponent implements AfterViewInit {
     { icon: 'account_circle', route: NotifyRoutes.ACCOUNT },
     { icon: 'view_list', route: NotifyRoutes.LIST },
     { icon: 'notifications', route: NotifyRoutes.NOTIFICATIONS },
-    { icon: 'add_circle', route: NotifyRoutes.NEW_NOTE },
+    { icon: 'add_circle', route: NotifyRoutes.NOTE },
   ] as const;
 
   private getIconByRoute(route: NotifyRoutes): string {

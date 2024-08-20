@@ -3,5 +3,5 @@ export enum NotifyRoutes {
   ACCOUNT = 'account',
   LIST = 'list',
   NOTIFICATIONS = 'notifications',
-  NEW_NOTE = 'new-note',
+  NOTE = 'note',
 }
