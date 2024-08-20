@@ -33,7 +33,9 @@
               }
             ],
             "styles": [
-              "src/styles/styles.scss"
+              "src/styles/styles.scss",
+              "./node_modules/medium-editor/dist/css/medium-editor.min.css",
+              "./node_modules/medium-editor/dist/css/themes/default.min.css"
             ],
             "scripts": []
           },
