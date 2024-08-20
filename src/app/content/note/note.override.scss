@@ -8,6 +8,7 @@ app-note {
         background: var(--bg-color);
         box-shadow: none;
         border: none;
+        visibility: visible !important;
     }
 
     .medium-editor-toolbar li button {
