@@ -1,3 +1,9 @@
 {
-  "cSpell.words": ["gsap", "swipeleft", "swiperight"]
+  "cSpell.words": [
+    "contenteditable",
+    "gsap",
+    "swipeleft",
+    "swiperight",
+    "uuidv"
+  ]
 }
