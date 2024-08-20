@@ -1,18 +1,41 @@
 :host {
-  display: grid;
-  height: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
-.note-form {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+.note_form {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    height: 100%;
+    outline: none;
 }
 
-.note-field {
-  flex-grow: 1;
+.note_title__label,
+.note_content__label {
+    color: var(--mat-neutral-70);
 }
 
-.note-textarea {
-  resize: none;
+.note_title__label,
+.note_title__content {
+    font-size: var(--font-4);
+    line-height: var(--line-height-4);
+}
+
+.note_title__content {
+    min-height: var(--line-height-4);
+}
+
+.note_field__content {
+    display: flex;
+    flex-direction: column;
+}
+
+.note_content {
+    flex-grow: 1;
+}
+
+app-note-bottom-navbar {
+    position: sticky;
+    bottom: 0;
 }

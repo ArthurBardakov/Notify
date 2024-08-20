@@ -1,28 +1,38 @@
-import { AfterViewInit, Component, ElementRef, HostListener, inject, input, OnDestroy, OnInit, viewChild } from '@angular/core';
-import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { Component, ElementRef, inject, input, OnDestroy, OnInit, viewChild } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { NoteBottomNavbarComponent } from './note-bottom-navbar/note-bottom-navbar.component';
 import { NotesStore } from '../../state/notes.store';
 import { v4 as uuidv4 } from 'uuid';
 import { Note } from '../../shared/interfaces/note';
+import { ActivatedRoute, Router } from '@angular/router';
+import MediumEditor from 'medium-editor';
 
 @Component({
   selector: 'app-note',
   templateUrl: './note.component.html',
   styleUrl: './note.component.scss',
+  host: { '(window:beforeunload)': 'ngOnDestroy()' },
   standalone: true,
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, NoteBottomNavbarComponent],
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+  ],
 })
-export class NoteComponent implements OnInit, AfterViewInit, OnDestroy {
+export class NoteComponent implements OnInit, OnDestroy {
   protected readonly noteId = input<string | undefined>(undefined, { alias: 'id' });
-  protected readonly noteTextarea = viewChild.required<ElementRef<HTMLTextAreaElement>>('noteTextarea');
+  protected readonly noteForm = viewChild.required<ElementRef<HTMLFormElement>>('noteForm');
+  protected readonly noteTitle = viewChild.required<ElementRef<HTMLDivElement>>('noteTitle');
+  protected readonly noteContent = viewChild.required<ElementRef<HTMLDivElement>>('noteContent');
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   private readonly store = inject(NotesStore);
-  private readonly nonNullBuilder = inject(NonNullableFormBuilder);
-  public readonly noteTitle = this.nonNullBuilder.control('');
-  public readonly noteContent = this.nonNullBuilder.control('');
+
+  private get noteTitleHtml(): string { return this.noteTitle().nativeElement.innerHTML; }
+  private get noteContentHtml(): string { return this.noteContent().nativeElement.innerHTML; }
   
-  private currentNote: Note = {
+  protected currentNote: Note = {
     id: uuidv4(),
     title: '',
     content: '',
@@ -32,23 +42,40 @@ export class NoteComponent implements OnInit, AfterViewInit, OnDestroy {
   };
 
   ngOnInit(): void {
-    if (this.noteId()) {
-      const storeNote = this.store.getNoteById(this.noteId()!);
-      if (!storeNote) throw new Error('Note not found');
-      this.currentNote = storeNote;
-      this.noteTitle.setValue(storeNote.title || '');
-      this.noteContent.setValue(storeNote.content || '');
-    } else this.store.addNote(this.currentNote);
-  }
-  
-  ngAfterViewInit(): void {
-    const contentElement = this.noteTextarea().nativeElement;
-    new Hammer(contentElement);
+    this.setNoteIdWhenNewNote();
+    this.initializeOrAddNote();
+    this.setupMediumEditor();
+    this.noteTitle().nativeElement.focus();
   }
 
-  @HostListener('window:beforeunload')
-  public onBeforeUnload(): void {
-    this.ngOnDestroy();
+  private setupMediumEditor(): void {
+    const containerElement = this.noteForm().nativeElement;
+    new MediumEditor(containerElement, {
+      elementsContainer: containerElement,
+      disableEditing: true,
+      toolbar: {
+        buttons: ['bold', 'italic', 'underline', 'anchor', 'h2', 'h3', 'quote'],
+        static: true,  // Makes the toolbar always visible
+        sticky: true,  // Keeps the toolbar at the top when scrolling
+        updateOnEmptySelection: true  // Allows the toolbar to remain visible even when nothing is selected
+      },
+    });
+  }
+  
+
+  private setNoteIdWhenNewNote(): void {
+    if (this.noteId()) return;
+    void this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { id: this.currentNote.id },
+      queryParamsHandling: "merge",
+    });
+  }
+
+  private initializeOrAddNote(): void {
+    const storeNote = this.store.getNoteById(this.noteId()!);
+    if (!storeNote) this.store.addNote(this.currentNote);
+    this.currentNote = storeNote || this.currentNote;
   }
 
   ngOnDestroy(): void {
@@ -57,18 +84,18 @@ export class NoteComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private updateNoteIfChanged(): void {
-    if (this.currentNote.title === this.noteTitle.value &&
-        this.currentNote.content === this.noteContent.value) return;
+    if (this.currentNote.title === this.noteTitleHtml &&
+        this.currentNote.content === this.noteContentHtml) return;
 
     if (this.noteId()) this.currentNote.updatedAt = new Date();
-    this.currentNote.title = this.noteTitle.value;
-    this.currentNote.content = this.noteContent.value;
+    this.currentNote.title = this.noteTitleHtml;
+    this.currentNote.content = this.noteContentHtml;
     this.store.updateNote(this.currentNote);
   }
 
   private cleanupEmptyNote(): void {
-    const isNoteTitleEmpty = !this.noteTitle.value?.trim();
-    const isNoteContentEmpty = !this.noteContent.value?.trim();
+    const isNoteTitleEmpty = !this.noteContentHtml.trim();
+    const isNoteContentEmpty = !this.noteContentHtml.trim();
     const isNoteEmpty = isNoteTitleEmpty && isNoteContentEmpty;
     if (isNoteEmpty) this.store.deleteNote(this.currentNote.id);
   }

@@ -1,20 +1,21 @@
-<form class="note-form">
-  <mat-form-field>
-    <mat-label>Note Title</mat-label>
-    <input [formControl]="noteTitle" matInput placeholder="Ex. Send an email" />
-  </mat-form-field>
+<form #noteForm class="note_form">
+  <div class="note_field note_field__title">
+    <mat-label class="note_title__label">Note Title</mat-label>
+    <div #noteTitle
+        contenteditable="true"
+        spellcheck="false"
+        class="note_title__content"
+        [innerHTML]="currentNote.title">
+    </div>
+  </div>
 
-  <mat-form-field class="note-field">
-    <mat-label>Leave a note</mat-label>
-    <textarea
-      #noteTextarea
-      [formControl]="noteContent"
-      class="note-textarea"
-      matInput
-      placeholder="Ex. Let's have a..."
-    >
-    </textarea>
-  </mat-form-field>
+  <div class="note_field note_field__content">
+    <mat-label class="note_content__label">Leave a note</mat-label>
+    <div #noteContent
+        contenteditable="true"
+        spellcheck="false"
+        class="note_content" 
+        [innerHTML]="currentNote.content">
+    </div>
+  </div>
 </form>
-
-<!-- <app-note-bottom-navbar /> -->
