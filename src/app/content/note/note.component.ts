@@ -46,6 +46,18 @@ export class NoteComponent implements OnInit, OnDestroy {
     this.initializeOrAddNote();
     this.setupMediumEditor();
     this.noteTitle().nativeElement.focus();
+    this.toggleMediumToolbarOnKeyboardAppear();
+  }
+
+  private toggleMediumToolbarOnKeyboardAppear(): void {
+    visualViewport?.addEventListener('resize', (e) => {
+      const viewportHeight = (e.target as VisualViewport).height;
+      const toolbar = document.querySelector<HTMLElement>('.medium-editor-toolbar');
+      if (!toolbar) throw new Error('Medium Editor toolbar not found');
+      const toolbarHeight = toolbar.offsetHeight;
+      const newToolbarTop = window.innerHeight - viewportHeight - toolbarHeight;
+      toolbar.style.bottom = newToolbarTop < 10 ? '10px' : `${newToolbarTop}px`;
+    });
   }
 
   private setupMediumEditor(): void {
