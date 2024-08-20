@@ -66,7 +66,7 @@ export class NoteComponent implements OnInit, OnDestroy {
       elementsContainer: containerElement,
       disableEditing: true,
       toolbar: {
-        buttons: ['bold', 'italic', 'underline', 'anchor', 'h2', 'h3', 'quote'],
+        buttons: ['bold', 'italic', 'underline', 'anchor', 'h2', 'h3', 'unorderedlist'],
         static: true,  // Makes the toolbar always visible
         sticky: true,  // Keeps the toolbar at the top when scrolling
         updateOnEmptySelection: true  // Allows the toolbar to remain visible even when nothing is selected
