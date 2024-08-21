@@ -1,5 +1,5 @@
 $bblSize: 3.4rem;
-$buttonColor: var(--mat-secondary-80);
+$inner-button-color: #c385856e; // c385856e, f4c0c06e
 
 nav {
   position: relative;
@@ -48,14 +48,13 @@ nav {
 }
 
 .blur_bubble_outer {
-  --inner-button-color: #f4c0c06e;
-  background: var(--inner-button-color);
-  box-shadow: 0px 10px 5px 0px var(--inner-button-color);
+  background: $inner-button-color;
+  box-shadow: 0px 10px 5px 0px $inner-button-color;
 }
 
 .blur_bubble_inner {
-  background: $buttonColor;
-  box-shadow: 0px 10px 5px 0px var(--inner-button-color);
+  background: var(--icon-color);
+  box-shadow: 0px 10px 5px 0px $inner-button-color;
 }
 
 .main_bubble {
@@ -63,7 +62,7 @@ nav {
   align-items: center;
   justify-content: center;
   translate: -50% 120%;
-  background: $buttonColor;
+  background: var(--icon-color);
   z-index: 10000;
 }
 
@@ -72,7 +71,7 @@ nav {
 }
 
 mat-icon {
-  color: $buttonColor;
+  color: var(--icon-color);
 }
 
 .active-page {
