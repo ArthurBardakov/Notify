@@ -1,32 +1,5 @@
 app-note {
-    .medium-editor-toolbar {
-        bottom: 10px;
-        position: sticky;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: var(--bg-color);
-        box-shadow: none;
-        border: none;
-        visibility: visible !important;
-    }
-
-    .medium-editor-toolbar li button {
-        background: var(--bg-color);
-        color: var(--text-color-dark);
-        border: none;
-    }
-
-    .medium-editor-toolbar li .medium-editor-button-active,
-    .medium-editor-toolbar li button:hover {
-        background: var(--mat-primary-90);
-        color: var(--text-color-dark);
-    }
-
-    .medium-editor-toolbar-actions {
-        display: flex !important;
-        align-items: center;
-        justify-content: space-around;
-        width: 100%;
+    .note_content ul {
+        padding-left: var(--space-xs);
     }
 }

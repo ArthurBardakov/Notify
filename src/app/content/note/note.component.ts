@@ -6,7 +6,7 @@ import { NotesStore } from '../../state/notes.store';
 import { v4 as uuidv4 } from 'uuid';
 import { Note } from '../../shared/interfaces/note';
 import { ActivatedRoute, Router } from '@angular/router';
-import MediumEditor from 'medium-editor';
+import { NoteToolbarComponent } from './note-toolbar/note-toolbar.component';
 
 @Component({
   selector: 'app-note',
@@ -18,20 +18,21 @@ import MediumEditor from 'medium-editor';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
+    NoteToolbarComponent,
   ],
 })
 export class NoteComponent implements OnInit, OnDestroy {
   protected readonly noteId = input<string | undefined>(undefined, { alias: 'id' });
-  protected readonly noteForm = viewChild.required<ElementRef<HTMLFormElement>>('noteForm');
-  protected readonly noteTitle = viewChild.required<ElementRef<HTMLDivElement>>('noteTitle');
-  protected readonly noteContent = viewChild.required<ElementRef<HTMLDivElement>>('noteContent');
+  protected readonly noteContentField = viewChild.required<ElementRef<HTMLElement>>('noteContentFieldEl');
+  protected readonly noteTitle = viewChild.required<ElementRef<HTMLDivElement>>('noteTitleEl');
+  protected readonly noteContent = viewChild.required<ElementRef<HTMLDivElement>>('noteContentEl');
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly store = inject(NotesStore);
 
   private get noteTitleHtml(): string { return this.noteTitle().nativeElement.innerHTML; }
   private get noteContentHtml(): string { return this.noteContent().nativeElement.innerHTML; }
-  
+
   protected currentNote: Note = {
     id: uuidv4(),
     title: '',
@@ -44,34 +45,6 @@ export class NoteComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.setNoteIdWhenNewNote();
     this.initializeOrAddNote();
-    this.setupMediumEditor();
-    this.toggleMediumToolbarOnKeyboardAppear();
-  }
-
-  private toggleMediumToolbarOnKeyboardAppear(): void {
-    visualViewport?.addEventListener('resize', (e) => {
-      const viewportHeight = (e.target as VisualViewport).height;
-      const noteForm = this.noteForm().nativeElement;
-      const toolbar = noteForm.querySelector<HTMLElement>('.medium-editor-toolbar');
-      if (!toolbar) throw new Error('Medium Editor toolbar not found');
-      const toolbarHeight = toolbar.offsetHeight;
-      const newToolbarTop = window.innerHeight - viewportHeight - toolbarHeight;
-      toolbar.style.bottom = newToolbarTop < 10 ? '10px' : `${newToolbarTop}px`;
-    });
-  }
-
-  private setupMediumEditor(): void {
-    const containerElement = this.noteForm().nativeElement;
-    new MediumEditor(containerElement, {
-      elementsContainer: containerElement,
-      disableEditing: true,
-      toolbar: {
-        buttons: ['bold', 'italic', 'underline', 'anchor', 'h2', 'h3', 'unorderedlist'],
-        static: true,  // Makes the toolbar always visible
-        sticky: true,  // Keeps the toolbar at the top when scrolling
-        updateOnEmptySelection: true  // Allows the toolbar to remain visible even when nothing is selected
-      },
-    });
   }
 
   private setNoteIdWhenNewNote(): void {

@@ -1,0 +1,36 @@
+app-note {
+    .medium-editor-toolbar {
+        bottom: 10px;
+        position: sticky;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg-color);
+        box-shadow: none;
+        border: none;
+        visibility: hidden !important;
+    }
+
+    .medium-editor-toolbar.open {
+        visibility: visible !important;
+    }
+
+    .medium-editor-toolbar li button {
+        background: var(--bg-color);
+        color: var(--icon-color);
+        border: none;
+    }
+
+    .medium-editor-toolbar li .medium-editor-button-active,
+    .medium-editor-toolbar li button:hover {
+        background: var(--mat-primary-90);
+        color: var(--icon-color);
+    }
+
+    .medium-editor-toolbar-actions {
+        display: flex !important;
+        align-items: center;
+        justify-content: space-around;
+        width: 100%;
+    }
+}

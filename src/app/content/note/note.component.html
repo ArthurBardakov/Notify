@@ -1,7 +1,7 @@
-<form #noteForm class="note_form">
+<form class="note_form">
   <div class="note_field note_field__title">
     <mat-label class="note_title__label">Note Title</mat-label>
-    <div #noteTitle
+    <div #noteTitleEl
         contenteditable="true"
         spellcheck="false"
         class="note_title__content"
@@ -9,9 +9,10 @@
     </div>
   </div>
 
-  <div class="note_field note_field__content">
+  <div #noteContentFieldEl class="note_field note_field__content">
+    <app-note-toolbar [containerElement]="noteContentField()" />
     <mat-label class="note_content__label">Leave a note</mat-label>
-    <div #noteContent
+    <div #noteContentEl
         contenteditable="true"
         spellcheck="false"
         class="note_content" 
