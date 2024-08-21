@@ -18,7 +18,8 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "allowedCommonJsDependencies": [
-              "hammerjs"
+              "hammerjs",
+              "medium-editor"
             ],
             "outputPath": "dist/notify",
             "index": "src/index.html",
