@@ -33,4 +33,20 @@ app-note {
         justify-content: space-around;
         width: 100%;
     }
+
+    ngx-colors {
+        position: absolute;
+        opacity: 0 !important;
+    }
+}
+
+body:has(app-note) {
+    ngx-colors-panel {
+        translate: -3.375rem -1.25rem;
+    }
+
+    ngx-colors-panel > .opened {
+        background: var(--bg-color) !important;
+        box-shadow: var(--card-box-shadow) !important;
+    }
 }

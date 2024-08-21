@@ -1,16 +1,19 @@
 import { Component, ElementRef, input, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import MediumEditor from 'medium-editor';
+import { NgxColorsModule } from 'ngx-colors';
 
 @Component({
   selector: 'app-note-toolbar',
   templateUrl: './note-toolbar.component.html',
   styleUrl: './note-toolbar.component.scss',
   standalone: true,
-  imports: [MatIconModule],
+  imports: [MatIconModule, NgxColorsModule, FormsModule],
 })
 export class NoteToolbarComponent implements OnInit {
   public containerElement = input.required<ElementRef<HTMLElement>>();
+  protected selectedNoteColor = "#ffffff";
 
   public get isMediumEditorToolbarOpen(): boolean {
     const containerElement = this.containerElement().nativeElement;

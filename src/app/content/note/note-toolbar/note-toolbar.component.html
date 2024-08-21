@@ -1,9 +1,29 @@
 <div class="note_toolbar">
     @if (!isMediumEditorToolbarOpen) {
-        <mat-icon class="note_toolbar__icon note_toolbar__lens">color_lens</mat-icon>
-        <mat-icon class="note_toolbar__icon note_toolbar__open" (click)="toggleMediumEditorToolbar()">type_specimen</mat-icon>
-        <mat-icon class="note_toolbar__icon note_toolbar__more">more_vert</mat-icon>
+        <mat-icon class="note_toolbar__icon note_toolbar__lens">
+            color_lens
+            <ngx-colors 
+                ngx-colors-trigger
+                [colorsAnimation]="'popup'"
+                [(ngModel)]="selectedNoteColor"
+            ></ngx-colors>
+        </mat-icon>
+
+        <mat-icon
+            class="note_toolbar__icon note_toolbar__open"
+            (click)="toggleMediumEditorToolbar()">
+            type_specimen
+        </mat-icon>
+
+        <mat-icon
+            class="note_toolbar__icon note_toolbar__more">
+            more_vert
+        </mat-icon>
     } @else {
-        <mat-icon class="note_toolbar__icon note_toolbar__close" (click)="toggleMediumEditorToolbar()">close</mat-icon>
+        <mat-icon
+            class="note_toolbar__icon note_toolbar__close"
+            (click)="toggleMediumEditorToolbar()">
+            close
+        </mat-icon>
     }
 </div>
