@@ -23,13 +23,12 @@ import { CssVariables } from '../../shared/css-variable-helper';
   ],
 })
 export class NoteComponent implements OnInit, OnDestroy {
-  protected readonly noteId = input<string | undefined>(undefined, { alias: 'id' });
+  protected readonly noteId = input.required<string>({ alias: 'id' });
 
   protected readonly noteContentField = viewChild.required<ElementRef<HTMLElement>>('noteContentFieldEl');
   protected readonly noteTitle = viewChild.required<ElementRef<HTMLDivElement>>('noteTitleEl');
   protected readonly noteContent = viewChild.required<ElementRef<HTMLDivElement>>('noteContentEl');
-
-  protected readonly selectedNoteColor = signal<string>(CssVariables.primaryColor);
+  protected readonly noteToolbar = viewChild.required(NoteToolbarComponent);
 
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
@@ -37,6 +36,17 @@ export class NoteComponent implements OnInit, OnDestroy {
 
   private get noteTitleHtml(): string { return this.noteTitle().nativeElement.innerHTML; }
   private get noteContentHtml(): string { return this.noteContent().nativeElement.innerHTML; }
+  private get noteColor(): string { return this.noteToolbar().noteColor(); }
+
+  private get hasNoteChanged(): boolean {
+    return this.currentNote.title !== this.noteTitleHtml ||
+           this.currentNote.content !== this.noteContentHtml ||
+           this.currentNote.hexColor !== this.noteColor;
+  }
+
+  private get isNewNote(): boolean {
+    return this.currentNote.title === '' && this.currentNote.content === '';
+  }
 
   protected currentNote: Note = {
     id: uuidv4(),
@@ -63,9 +73,9 @@ export class NoteComponent implements OnInit, OnDestroy {
   }
 
   private initializeOrAddNote(): void {
-    const storeNote = this.store.getNoteById(this.noteId()!);
+    const storeNote = this.store.getNoteById(this.noteId());
     if (!storeNote) this.store.addNote(this.currentNote);
-    this.currentNote = storeNote || this.currentNote;
+    else this.currentNote = storeNote;
   }
 
   ngOnDestroy(): void {
@@ -74,19 +84,16 @@ export class NoteComponent implements OnInit, OnDestroy {
   }
 
   private updateNoteIfChanged(): void {
-    if (this.currentNote.title === this.noteTitleHtml &&
-        this.currentNote.content === this.noteContentHtml &&
-        this.currentNote.hexColor === this.selectedNoteColor()) return;
-
-    if (this.noteId()) this.currentNote.updatedAt = new Date();
+    if (!this.hasNoteChanged) return;
+    if (!this.isNewNote) this.currentNote.updatedAt = new Date();    
     this.currentNote.title = this.noteTitleHtml;
     this.currentNote.content = this.noteContentHtml;
-    this.currentNote.hexColor = this.selectedNoteColor();
+    this.currentNote.hexColor = this.noteColor;
     this.store.updateNote(this.currentNote);
   }
 
   private cleanupEmptyNote(): void {
-    const isNoteTitleEmpty = !this.noteContentHtml.trim();
+    const isNoteTitleEmpty = !this.noteTitleHtml.trim();
     const isNoteContentEmpty = !this.noteContentHtml.trim();
     const isNoteEmpty = isNoteTitleEmpty && isNoteContentEmpty;
     if (isNoteEmpty) this.store.deleteNote(this.currentNote.id);
