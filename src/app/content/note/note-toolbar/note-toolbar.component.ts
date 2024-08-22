@@ -32,8 +32,9 @@ export class NoteToolbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.setupMediumEditor();
-    this.toggleMediumToolbarOnKeyboardAppear();
-    this.toggleCloseToolbarOnKeyboardAppear();
+    const noteToolbarBottom = this.getNoteToolbarBottom();
+    this.toggleMediumToolbarOnKeyboardAppear(noteToolbarBottom);
+    this.toggleCloseToolbarOnKeyboardAppear(noteToolbarBottom);
   }
 
   private setupMediumEditor(): void {
@@ -49,8 +50,16 @@ export class NoteToolbarComponent implements OnInit {
       },
     });
   }
+
+  private getNoteToolbarBottom(): number {
+    const noteToolbar = this.noteToolbar().nativeElement;
+    const noteToolbarStyles = getComputedStyle(noteToolbar);
+    const noteToolbarBottom = noteToolbarStyles.getPropertyValue('bottom');
+    const noteToolbarBottomValue = parseInt(noteToolbarBottom, 10);
+    return noteToolbarBottomValue;
+  }
   
-  private toggleMediumToolbarOnKeyboardAppear(): void {
+  private toggleMediumToolbarOnKeyboardAppear(defaultBottom: number): void {
     visualViewport?.addEventListener('resize', (e) => {
       const viewportHeight = (e.target as VisualViewport).height;
       const noteForm = this.containerElement().nativeElement;
@@ -58,18 +67,20 @@ export class NoteToolbarComponent implements OnInit {
       if (!toolbar) throw new Error('Medium Editor toolbar not found');
       const toolbarHeight = toolbar.offsetHeight;
       const newToolbarTop = window.innerHeight - viewportHeight - toolbarHeight;
-      toolbar.style.bottom = newToolbarTop < 10 ? '10px' : `${newToolbarTop}px`;
+      toolbar.style.bottom = newToolbarTop < defaultBottom ?
+        `${defaultBottom}px` : `${newToolbarTop}px`;
     });
   }
 
-  private toggleCloseToolbarOnKeyboardAppear(): void {
+  private toggleCloseToolbarOnKeyboardAppear(defaultBottom: number): void {
     visualViewport?.addEventListener('resize', (e) => {
       const viewportHeight = (e.target as VisualViewport).height;
       const noteToolbar = this.noteToolbar().nativeElement;
       if (!noteToolbar) throw new Error('Note toolbar not found');
       const toolbarHeight = noteToolbar.offsetHeight;
       const newToolbarTop = window.innerHeight - viewportHeight - toolbarHeight;
-      noteToolbar.style.bottom = newToolbarTop < 10 ? '10px' : `${newToolbarTop}px`;
+      noteToolbar.style.bottom = newToolbarTop < defaultBottom ?
+        `${defaultBottom}px` : `${newToolbarTop}px`;
     });
   }
 
