@@ -1,6 +1,5 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { NotesStore } from '../../../state/notes.store';
 import { NavService } from '../../../navbar/nav.service';
 import { NotifyRoutes } from '../../../shared/enums/routes';
 import { Note } from '../../../shared/interfaces/note';
@@ -15,7 +14,7 @@ import { DatePipe, NgStyle } from '@angular/common';
 })
 export class NoteCardComponent {
     public note = input.required<Note>();
-    protected readonly store = inject(NotesStore);
+    public readonly deleteClicked = output<string>();
     private readonly navSrc = inject(NavService);
   
     protected goToNote(noteId: string): void {

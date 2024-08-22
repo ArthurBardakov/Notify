@@ -5,7 +5,10 @@
 
     <div class="note-card-group">
         @for (note of notesGroup[1]; track $index) {
-            <app-note-card [note]="note"></app-note-card>
+            <app-note-card
+                [note]="note"
+                (deleteClicked)="store.deleteNote($event)"
+            />
         }
     </div>
 

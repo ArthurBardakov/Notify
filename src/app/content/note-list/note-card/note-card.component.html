@@ -16,8 +16,8 @@
         <mat-icon
             class="note-card__delete-icon"
             aria-hidden="false"
-            (click)="store.deleteNote(noteId)"
-            (keyup.enter)="store.deleteNote(noteId)"
+            (click)="deleteClicked.emit(noteId)"
+            (keyup.enter)="deleteClicked.emit(noteId)"
             tabindex="0">
             delete
         </mat-icon>
