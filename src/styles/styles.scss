@@ -59,12 +59,10 @@
     --space-3xl: clamp(6rem, 3.4513rem + 12.7434vw, 15rem);
 
 	// colors
+	--mat-primary: var(--mat-primary-98);
+	--mat-neutral: var(--mat-neutral-50);
 	--text-color-dark: var(--mat-neutral-40);
 	--text-color-grey: var(--mat-neutral-70);
-
-	// backgrounds
-	--bg-color: var(--mat-primary-98);
-	--icon-color: var(--mat-neutral-50);
 
 	// misc
 	--card-box-shadow:
@@ -91,7 +89,7 @@ p, span, input, textarea, mat-label, div[contenteditable] {
 }
 
 body {
-	background-color: var(--bg-color);
+	background-color: var(--mat-primary);
 }
 
 .content > * {

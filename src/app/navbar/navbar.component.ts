@@ -100,7 +100,7 @@ export class NavBarComponent implements AfterViewInit {
   }
 
   private triggerDefaultIcon(): void {
-    const bgColor = CssVariables.backgroundColor;
+    const primaryColor = CssVariables.primaryColor;
     const iconCenter = this.iconCenter(this.currentRoute);
 
     gsap
@@ -108,7 +108,7 @@ export class NavBarComponent implements AfterViewInit {
       .set('.blur_bubble', { x: iconCenter, opacity: 1 }, 0)
       .to('.blur_bubble_outer', { y: this.backBubbleY, ease: 'back.inOut(3)', duration: 1 }, 0)
       .to('.blur_bubble_inner, .main_bubble', { y: this.mainBubbleY, ease: 'back.inOut(3)', duration: 1 }, 0)
-      .to('.blur_bubble_inner', { boxShadow: `${bgColor} 0px 0px 20px 9px`, duration: 1, }, 0)
+      .to('.blur_bubble_inner', { boxShadow: `${primaryColor} 0px 0px 20px 9px`, duration: 1, }, 0)
       .set(`#m_icon${this.currentRoute}`, { opacity: 0 }, "-=0.5");
   }
 

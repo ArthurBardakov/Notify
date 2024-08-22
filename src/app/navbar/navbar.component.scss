@@ -27,7 +27,7 @@ nav {
 }
 
 .blur_section {
-  background-color: var(--bg-color);
+  background-color: var(--mat-primary);
   width: 100%;
   height: 100%;
   margin-top: -3%;
@@ -53,7 +53,7 @@ nav {
 }
 
 .blur_bubble_inner {
-  background: var(--icon-color);
+  background: var(--mat-neutral);
   box-shadow: 0px 10px 5px 0px $inner-button-color;
 }
 
@@ -62,7 +62,7 @@ nav {
   align-items: center;
   justify-content: center;
   translate: -50% 120%;
-  background: var(--icon-color);
+  background: var(--mat-neutral);
   z-index: 10000;
 }
 
@@ -71,7 +71,7 @@ nav {
 }
 
 mat-icon {
-  color: var(--icon-color);
+  color: var(--mat-neutral);
 }
 
 .active-page {

@@ -29,7 +29,7 @@ export class NoteComponent implements OnInit, OnDestroy {
   protected readonly noteTitle = viewChild.required<ElementRef<HTMLDivElement>>('noteTitleEl');
   protected readonly noteContent = viewChild.required<ElementRef<HTMLDivElement>>('noteContentEl');
 
-  protected readonly selectedNoteColor = signal<string>(CssVariables.backgroundColor);
+  protected readonly selectedNoteColor = signal<string>(CssVariables.primaryColor);
 
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
@@ -42,7 +42,7 @@ export class NoteComponent implements OnInit, OnDestroy {
     id: uuidv4(),
     title: '',
     content: '',
-    hexColor: CssVariables.backgroundColor,
+    hexColor: CssVariables.primaryColor,
     createdAt: new Date(),
     updatedAt: undefined,
     deletedAt: undefined,
