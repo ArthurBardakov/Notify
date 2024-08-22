@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, input, OnDestroy, OnInit, viewChild } from '@angular/core';
+import { Component, ElementRef, inject, input, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Note } from '../../shared/interfaces/note';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NoteToolbarComponent } from './note-toolbar/note-toolbar.component';
+import { CssVariables } from '../../shared/css-variable-helper';
 
 @Component({
   selector: 'app-note',
@@ -23,9 +24,13 @@ import { NoteToolbarComponent } from './note-toolbar/note-toolbar.component';
 })
 export class NoteComponent implements OnInit, OnDestroy {
   protected readonly noteId = input<string | undefined>(undefined, { alias: 'id' });
+
   protected readonly noteContentField = viewChild.required<ElementRef<HTMLElement>>('noteContentFieldEl');
   protected readonly noteTitle = viewChild.required<ElementRef<HTMLDivElement>>('noteTitleEl');
   protected readonly noteContent = viewChild.required<ElementRef<HTMLDivElement>>('noteContentEl');
+
+  protected readonly selectedNoteColor = signal<string>(CssVariables.backgroundColor);
+
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly store = inject(NotesStore);
@@ -37,6 +42,7 @@ export class NoteComponent implements OnInit, OnDestroy {
     id: uuidv4(),
     title: '',
     content: '',
+    hexColor: CssVariables.backgroundColor,
     createdAt: new Date(),
     updatedAt: undefined,
     deletedAt: undefined,
@@ -69,11 +75,13 @@ export class NoteComponent implements OnInit, OnDestroy {
 
   private updateNoteIfChanged(): void {
     if (this.currentNote.title === this.noteTitleHtml &&
-        this.currentNote.content === this.noteContentHtml) return;
+        this.currentNote.content === this.noteContentHtml &&
+        this.currentNote.hexColor === this.selectedNoteColor()) return;
 
     if (this.noteId()) this.currentNote.updatedAt = new Date();
     this.currentNote.title = this.noteTitleHtml;
     this.currentNote.content = this.noteContentHtml;
+    this.currentNote.hexColor = this.selectedNoteColor();
     this.store.updateNote(this.currentNote);
   }
 

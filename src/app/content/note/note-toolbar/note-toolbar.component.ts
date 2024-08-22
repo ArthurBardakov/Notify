@@ -1,8 +1,10 @@
-import { Component, ElementRef, input, OnInit } from '@angular/core';
+import { Component, ElementRef, input, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import MediumEditor from 'medium-editor';
 import { NgxColorsModule } from 'ngx-colors';
+import { CssVariables } from '../../../shared/css-variable-helper';
+import { outputFromObservable, toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-note-toolbar',
@@ -13,7 +15,8 @@ import { NgxColorsModule } from 'ngx-colors';
 })
 export class NoteToolbarComponent implements OnInit {
   public containerElement = input.required<ElementRef<HTMLElement>>();
-  protected selectedNoteColor = "#ffffff";
+  protected readonly noteColor = signal<string>(CssVariables.backgroundColor);
+  public readonly selectedNoteColor = outputFromObservable(toObservable(this.noteColor));
 
   public get isMediumEditorToolbarOpen(): boolean {
     const containerElement = this.containerElement().nativeElement;

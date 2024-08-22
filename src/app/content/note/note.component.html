@@ -10,7 +10,10 @@
   </div>
 
   <div #noteContentFieldEl class="note_field note_field__content">
-    <app-note-toolbar [containerElement]="noteContentField()" />
+    <app-note-toolbar 
+      [containerElement]="noteContentField()"
+      (selectedNoteColor)="selectedNoteColor.set($event)"
+    />
     <mat-label class="note_content__label">Leave a note</mat-label>
     <div #noteContentEl
         contenteditable="true"
