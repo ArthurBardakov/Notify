@@ -1,4 +1,4 @@
-import { Component, ElementRef, input, model, OnInit } from '@angular/core';
+import { Component, ElementRef, input, model, OnInit, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import MediumEditor from 'medium-editor';
@@ -15,6 +15,7 @@ import { CssVariables } from '../../../shared/css-variable-helper';
 export class NoteToolbarComponent implements OnInit {
   public containerElement = input.required<ElementRef<HTMLElement>>();
   public noteColor = model.required<string>();
+  protected readonly noteToolbar = viewChild.required<ElementRef<HTMLElement>>('noteToolbarEl');
 
   protected readonly colorPickerPalette = [
     '#ffcdd2', '#f8bbd0', '#e1bee7', '#d1c4e9', '#c5cae9',
@@ -32,6 +33,7 @@ export class NoteToolbarComponent implements OnInit {
   ngOnInit(): void {
     this.setupMediumEditor();
     this.toggleMediumToolbarOnKeyboardAppear();
+    this.toggleCloseToolbarOnKeyboardAppear();
   }
 
   private setupMediumEditor(): void {
@@ -57,6 +59,17 @@ export class NoteToolbarComponent implements OnInit {
       const toolbarHeight = toolbar.offsetHeight;
       const newToolbarTop = window.innerHeight - viewportHeight - toolbarHeight;
       toolbar.style.bottom = newToolbarTop < 10 ? '10px' : `${newToolbarTop}px`;
+    });
+  }
+
+  private toggleCloseToolbarOnKeyboardAppear(): void {
+    visualViewport?.addEventListener('resize', (e) => {
+      const viewportHeight = (e.target as VisualViewport).height;
+      const noteToolbar = this.noteToolbar().nativeElement;
+      if (!noteToolbar) throw new Error('Note toolbar not found');
+      const toolbarHeight = noteToolbar.offsetHeight;
+      const newToolbarTop = window.innerHeight - viewportHeight - toolbarHeight;
+      noteToolbar.style.bottom = newToolbarTop < 10 ? '10px' : `${newToolbarTop}px`;
     });
   }
 
