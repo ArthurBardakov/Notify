@@ -16,6 +16,7 @@ import HammerInput from 'hammerjs';
 import { NavigationExtras, Router } from '@angular/router';
 import { NotifyRoutes } from '../shared/enums/routes';
 import { NavService } from './nav.service';
+import { CssVariables } from '../shared/css-variable-helper';
 
 @Component({
   selector: 'app-navbar',
@@ -99,9 +100,7 @@ export class NavBarComponent implements AfterViewInit {
   }
 
   private triggerDefaultIcon(): void {
-    const bodyElement = document.querySelector('body') as HTMLElement;
-    const computedBodyStyles = window.getComputedStyle(bodyElement);
-    const bgColor = computedBodyStyles.getPropertyValue('--bg-color');
+    const bgColor = CssVariables.backgroundColor;
     const iconCenter = this.iconCenter(this.currentRoute);
 
     gsap
