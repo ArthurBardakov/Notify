@@ -41,9 +41,11 @@
 	font-size: var(--font-1);
 	line-height: var(--line-height-1);
 	color: var(--text-color-grey);
+	flex-grow: 1;
 }
 
 .note-card__delete-icon {
-	justify-self: flex-end;
 	color: var(--mat-neutral);
+	width: auto;
+	padding-inline: 0.625rem;
 }

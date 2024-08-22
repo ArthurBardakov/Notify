@@ -6,13 +6,15 @@
         <h1 class="note-content-field note-content-field__title">{{ note().title }}</h1>
         <p class="note-content-field note-content-field__content">{{ note().content }}</p>
     </div>
+
     <div class="note-card__footer">
-        <p class="note-card__date">
+        <p class="note-card__date" (click)="goToNote(noteId)" (keyup.enter)="goToNote(noteId)" tabindex="0">
             {{
                 (hasBeenUpdated ? "Edited": "Created") + " " +
                 ((hasBeenUpdated ? note().updatedAt : note().createdAt) | date: 'h:mm a')
             }}
         </p>
+
         <mat-icon
             class="note-card__delete-icon"
             aria-hidden="false"
