@@ -1,7 +1,7 @@
 @let noteId = note().id;
 @let hasBeenUpdated = !!note().updatedAt;
 
-<div class="note-card">
+<div class="note-card" [ngStyle]="{ 'background-color': note().hexColor }">
     <div class="note-card__content" (click)="goToNote(noteId)" (keyup.enter)="goToNote(noteId)" tabindex="0">
         <h1 class="note-content-field note-content-field__title">{{ note().title }}</h1>
         <p class="note-content-field note-content-field__content">{{ note().content }}</p>
