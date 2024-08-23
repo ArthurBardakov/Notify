@@ -1,6 +1,6 @@
 import { computed } from '@angular/core';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
-import { Note } from '../shared/interfaces/note';
+import { Note } from '../shared/models/note';
 
 interface NotesState {
   notes: Note[];

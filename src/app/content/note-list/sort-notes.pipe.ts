@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Note } from '../../shared/interfaces/note';
+import { Note } from '../../shared/models/note';
 
 @Pipe({
   name: 'sortNotesByDate',

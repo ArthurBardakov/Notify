@@ -9,14 +9,15 @@ import {
 } from '@angular/core';
 import gsap from 'gsap';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
-import { map, Subject, tap } from 'rxjs';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { map, Subject } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 // do not remove the following import - tests complain if it's not there
 import HammerInput from 'hammerjs';
 import { NavigationExtras, Router } from '@angular/router';
 import { NotifyRoutes } from '../shared/enums/routes';
 import { NavService } from './nav.service';
 import { CssVariables } from '../shared/css-variable-helper';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-navbar',
@@ -26,14 +27,19 @@ import { CssVariables } from '../shared/css-variable-helper';
   imports: [MatIconModule],
 })
 export class NavBarComponent implements AfterViewInit {
-  public readonly swipeLeft = input.required<HammerInput | undefined>();
-  public readonly swipeRight = input.required<HammerInput | undefined>();
   private readonly router = inject(Router);
   private readonly navSrc = inject(NavService);
+
+  public readonly swipeLeft = input.required<HammerInput | undefined>();
+  public readonly swipeRight = input.required<HammerInput | undefined>();
+  
   private readonly mIcons = viewChildren(MatIcon);
+  private readonly toggleNavigationTo = toSignal(this.navSrc.toggleNavigationTo);
+  
   private readonly mainBubbleY = '-5%';
   private readonly backBubbleY = '10%';
-  private readonly swiped$ = new Subject<void>();
+  private readonly bubbleSwitched$ = new Subject<void>();
+  private routeHistory: { route: NotifyRoutes, extras?: NavigationExtras }[] = [];
 
   protected readonly routes = Object.entries(NotifyRoutes).map(([key, value]) => ({ key, value }));
   protected currentRoute = Object.values(NotifyRoutes)
@@ -53,7 +59,7 @@ export class NavBarComponent implements AfterViewInit {
   }
 
   protected readonly currentIcon = toSignal(
-    this.swiped$.pipe(map(() => this.getIconByRoute(this.currentRoute))),
+    this.bubbleSwitched$.pipe(map(() => this.getIconByRoute(this.currentRoute))),
     { initialValue: this.getIconByRoute(this.currentRoute) },
   );
 
@@ -62,22 +68,18 @@ export class NavBarComponent implements AfterViewInit {
   }
 
   constructor() {
+    this.routeHistory.push({ route: this.currentRoute });
     this.triggerBubbleSwitchFromOutside();
     this.registerSwipeLeft();
     this.registerSwipeRight();
-  }
-
-  ngAfterViewInit(): void {
-    this.triggerDefaultIcon();
+    this.onBackButtonClick();
   }
 
   private triggerBubbleSwitchFromOutside(): void {
-    this.navSrc.toggleNavigationTo
-      .pipe(
-        takeUntilDestroyed(),
-        tap((nav) => this.switchBubble(nav.route, nav.extras)),
-      )
-      .subscribe();
+    effect(() => {
+      const nav = this.toggleNavigationTo();
+      if (nav) this.switchBubble(nav.route, nav.extras);
+    });
   }
 
   private registerSwipeLeft(): void {
@@ -99,6 +101,22 @@ export class NavBarComponent implements AfterViewInit {
     });
   }
 
+  private onBackButtonClick(): void {
+    window.addEventListener('popstate', (event) => {
+      event.preventDefault();
+      if (this.routeHistory.length > 1) {
+        this.routeHistory.pop();
+        const prevRouteIndex = this.routeHistory.length - 1;
+        const previousRoute = this.routeHistory[prevRouteIndex];        
+        this.switchBubble(previousRoute.route, previousRoute.extras, false);
+      }
+    });
+  }
+
+  ngAfterViewInit(): void {
+    this.triggerDefaultIcon();
+  }
+
   private triggerDefaultIcon(): void {
     const primaryColor = CssVariables.primaryColor;
     const iconCenter = this.iconCenter(this.currentRoute);
@@ -112,13 +130,17 @@ export class NavBarComponent implements AfterViewInit {
       .set(`#m_icon${this.currentRoute}`, { opacity: 0 }, "-=0.5");
   }
 
-  public switchBubble(route: NotifyRoutes, extras?: NavigationExtras): void {
+  public switchBubble(
+    route: NotifyRoutes,
+    extras?: NavigationExtras,
+    storeRouteHistory = true): void {
+
     if (route === this.currentRoute) return;
     this.swapRoutes(route);
     const iconCenter = this.iconCenter(route);
     const bblEase = 'power2.out';
-    this.swiped$.next();
-    this.router.navigate(['/' + route], extras);
+    this.bubbleSwitched$.next();
+    this.navigateTo(route, extras, storeRouteHistory);
 
     gsap
       .timeline()
@@ -129,6 +151,18 @@ export class NavBarComponent implements AfterViewInit {
       .to('.blur_bubble_inner, .main_bubble', { y: '-40px', ease: bblEase, duration: 0.2 }, 0)
       .to('.blur_bubble_inner, .main_bubble', { y: this.mainBubbleY, duration: 0.4 }, '>')
       .to('.blur_bubble_outer', { y: this.backBubbleY, duration: 0.4 }, '<');
+  }
+
+  private navigateTo(
+    route: NotifyRoutes,
+    extras?: NavigationExtras,
+    storeRouteHistory = true): void {
+
+    const isNoteRoute = route === NotifyRoutes.NOTE;
+    const isNewNote = isNoteRoute && !extras?.queryParams?.['id'];
+    if (isNewNote) extras = { ...extras, queryParams: { id: uuidv4() } };
+    this.router.navigate([route], extras);
+    if (storeRouteHistory) this.routeHistory.push({ route, extras });
   }
 
   private swapRoutes(route: NotifyRoutes) {

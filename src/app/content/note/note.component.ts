@@ -1,13 +1,11 @@
-import { Component, ElementRef, inject, input, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnDestroy, viewChild } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NotesStore } from '../../state/notes.store';
-import { v4 as uuidv4 } from 'uuid';
-import { Note } from '../../shared/interfaces/note';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Note } from '../../shared/models/note';
+import { ActivatedRoute } from '@angular/router';
 import { NoteToolbarComponent } from './note-toolbar/note-toolbar.component';
-import { CssVariables } from '../../shared/css-variable-helper';
 
 @Component({
   selector: 'app-note',
@@ -22,16 +20,12 @@ import { CssVariables } from '../../shared/css-variable-helper';
     NoteToolbarComponent,
   ],
 })
-export class NoteComponent implements OnInit, OnDestroy {
-  protected readonly noteId = input.required<string>({ alias: 'id' });
-
+export class NoteComponent implements OnDestroy {
   protected readonly noteContentField = viewChild.required<ElementRef<HTMLElement>>('noteContentFieldEl');
   protected readonly noteTitle = viewChild.required<ElementRef<HTMLDivElement>>('noteTitleEl');
   protected readonly noteContent = viewChild.required<ElementRef<HTMLDivElement>>('noteContentEl');
   protected readonly noteToolbar = viewChild.required(NoteToolbarComponent);
 
-  private readonly router = inject(Router);
-  private readonly route = inject(ActivatedRoute);
   private readonly store = inject(NotesStore);
 
   private get noteTitleHtml(): string { return this.noteTitle().nativeElement.innerHTML; }
@@ -48,34 +42,14 @@ export class NoteComponent implements OnInit, OnDestroy {
     return this.currentNote.title === '' && this.currentNote.content === '';
   }
 
-  protected currentNote: Note = {
-    id: uuidv4(),
-    title: '',
-    content: '',
-    hexColor: CssVariables.primaryColor,
-    createdAt: new Date(),
-    updatedAt: undefined,
-    deletedAt: undefined,
-  };
+  protected readonly currentNote: Note;
 
-  ngOnInit(): void {
-    this.setNoteIdWhenNewNote();
-    this.initializeOrAddNote();
-  }
-
-  private setNoteIdWhenNewNote(): void {
-    if (this.noteId()) return;
-    void this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { id: this.currentNote.id },
-      queryParamsHandling: "merge",
-    });
-  }
-
-  private initializeOrAddNote(): void {
-    const storeNote = this.store.getNoteById(this.noteId());
-    if (!storeNote) this.store.addNote(this.currentNote);
-    else this.currentNote = storeNote;
+  constructor() {
+    const route = inject(ActivatedRoute);
+    const noteId = route.snapshot.queryParamMap.get('id');
+    if (!noteId) throw new Error('Note id not found');
+    const storeNote = this.store.getNoteById(noteId);
+    this.currentNote = storeNote ?? new Note(noteId)
   }
 
   ngOnDestroy(): void {
@@ -89,7 +63,7 @@ export class NoteComponent implements OnInit, OnDestroy {
     this.currentNote.title = this.noteTitleHtml;
     this.currentNote.content = this.noteContentHtml;
     this.currentNote.hexColor = this.noteColor;
-    this.store.updateNote(this.currentNote);
+    this.store.addNote(this.currentNote);
   }
 
   private cleanupEmptyNote(): void {

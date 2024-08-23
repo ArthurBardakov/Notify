@@ -2,7 +2,7 @@ import { Component, inject, input, output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { NavService } from '../../../navbar/nav.service';
 import { NotifyRoutes } from '../../../shared/enums/routes';
-import { Note } from '../../../shared/interfaces/note';
+import { Note } from '../../../shared/models/note';
 import { DatePipe, NgStyle } from '@angular/common';
 
 @Component({
