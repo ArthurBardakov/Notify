@@ -78,7 +78,7 @@ export class NavBarComponent implements AfterViewInit {
   private triggerBubbleSwitchFromOutside(): void {
     effect(() => {
       const nav = this.toggleNavigationTo();
-      if (nav) this.switchBubble(nav.route, nav.extras);
+      if (nav) untracked(() => this.switchBubble(nav.route, nav.extras));
     });
   }
 
