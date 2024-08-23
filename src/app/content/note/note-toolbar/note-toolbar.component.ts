@@ -2,7 +2,7 @@ import { Component, ElementRef, input, model, OnInit, viewChild } from '@angular
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import MediumEditor from 'medium-editor';
-import { NgxColorsModule } from 'ngx-colors';
+import { NgxColorsModule, NgxColorsTriggerDirective } from 'ngx-colors';
 import { CssVariables } from '../../../shared/css-variable-helper';
 
 @Component({
@@ -16,6 +16,7 @@ export class NoteToolbarComponent implements OnInit {
   public containerElement = input.required<ElementRef<HTMLElement>>();
   public noteColor = model.required<string>();
   protected readonly noteToolbar = viewChild.required<ElementRef<HTMLElement>>('noteToolbarEl');
+  protected readonly colorsPickerDirective = viewChild.required(NgxColorsTriggerDirective);
 
   protected readonly colorPickerPalette = [
     '#ffcdd2', '#f8bbd0', '#e1bee7', '#d1c4e9', '#c5cae9',
@@ -35,6 +36,7 @@ export class NoteToolbarComponent implements OnInit {
     const noteToolbarBottom = this.getNoteToolbarBottom();
     this.toggleMediumToolbarOnKeyboardAppear(noteToolbarBottom);
     this.toggleCloseToolbarOnKeyboardAppear(noteToolbarBottom);
+    this.triggerColorPickerManualClose();
   }
 
   private setupMediumEditor(): void {
@@ -103,6 +105,17 @@ export class NoteToolbarComponent implements OnInit {
       openedSectionObserver.disconnect();
     });
     openedSectionObserver.observe(openedSection);
+  }
+
+  private triggerColorPickerManualClose(): void {
+    visualViewport?.addEventListener('resize', (e) => {
+      const colorsPanel = document.querySelector<HTMLElement>('ngx-colors-panel');
+      const openedSection = colorsPanel?.querySelector<HTMLElement>('.opened');
+      if (!openedSection) return;
+      const viewportHeight = (e.target as VisualViewport).height;
+      const isDefaultPosition = window.innerHeight === viewportHeight;
+      if (isDefaultPosition) this.colorsPickerDirective().closePanel();
+    });
   }
 
   public toggleMediumEditorToolbar(): void {
