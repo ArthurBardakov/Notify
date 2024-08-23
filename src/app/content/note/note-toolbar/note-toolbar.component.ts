@@ -84,6 +84,27 @@ export class NoteToolbarComponent implements OnInit {
     });
   }
 
+  public onColorPickerOpen(): void {
+    if (!visualViewport) return;
+    const viewportHeight = visualViewport.height;
+    const colorsPanel = document.querySelector<HTMLElement>('ngx-colors-panel');
+    const openedSection = colorsPanel?.querySelector<HTMLElement>('.opened');
+    if (!openedSection) throw new Error('Color panel not found');
+    const noteToolbar = this.noteToolbar().nativeElement;
+    
+    const openedSectionObserver = new ResizeObserver(() => {
+      const newPanelTop =
+        window.innerHeight -
+        viewportHeight -
+        openedSection.offsetHeight / 2 +
+        noteToolbar.offsetHeight / 2;
+      const isDefaultPosition = window.innerHeight === viewportHeight;
+      openedSection.style.translate = '0px ' + (isDefaultPosition ? 0 : -newPanelTop) + 'px';
+      openedSectionObserver.disconnect();
+    });
+    openedSectionObserver.observe(openedSection);
+  }
+
   public toggleMediumEditorToolbar(): void {
     const containerElement = this.containerElement().nativeElement;
     const editor = containerElement.querySelector<HTMLElement>('.medium-editor-toolbar');

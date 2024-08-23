@@ -1,14 +1,15 @@
-<div class="note_toolbar" #noteToolbarEl>
+<div class="note_toolbar" #noteToolbarEl (mousedown)="$event.preventDefault()">
     @if (!isMediumEditorToolbarOpen) {
         <mat-icon class="note_toolbar__icon note_toolbar__lens">
             color_lens
-            <ngx-colors 
+            <ngx-colors
                 ngx-colors-trigger
                 [colorsAnimation]="'popup'"
                 [hideColorPicker]="true"
                 [hideTextInput]="true"
                 [palette]="colorPickerPalette"
                 [(ngModel)]="noteColor"
+                (open)="onColorPickerOpen()"
             ></ngx-colors>
         </mat-icon>
 
