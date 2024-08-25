@@ -10,6 +10,8 @@ $navbar-height: 4rem;
   height: calc(100svh - #{$navbar-height});
   padding: var(--space-xs);
   overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
 }
 
 .content:has(app-note) {
@@ -21,4 +23,15 @@ app-navbar {
   bottom: 0%;
   width: 100%;
   height: $navbar-height;
+}
+
+
+#install {
+  position: absolute;
+  z-index: 100000;
+  align-self: center;
+  width: 100px;
+  height: 50px;
+  font-size: 30px;
+  background: aquamarine;
 }
