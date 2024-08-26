@@ -39,17 +39,17 @@ export class AppComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    const installButton = document.querySelector("#install");
-    console.log(installButton);
+    // const installButton = document.querySelector("#install");
+    // console.log(installButton);
     
 
-    window.addEventListener("beforeinstallprompt", (event) => {
-      event.preventDefault();
-      this.installPrompt = event as BeforeInstallPromptEvent;
-      console.log(event);
+    // window.addEventListener("beforeinstallprompt", (event) => {
+    //   event.preventDefault();
+    //   this.installPrompt = event as BeforeInstallPromptEvent;
+    //   console.log(event);
       
-      installButton?.removeAttribute("hidden");
-    });
+    //   installButton?.removeAttribute("hidden");
+    // });
     
   }
 
