@@ -1,0 +1,1 @@
+import{Fb as i,Gb as a,Yb as s,gc as r,ia as o}from"./chunk-N7K2CRMW.js";var m=(()=>{let e=class e{};e.\u0275fac=function(n){return new(n||e)},e.\u0275cmp=o({type:e,selectors:[["app-menu"]],standalone:!0,features:[r],decls:2,vars:0,template:function(n,p){n&1&&(i(0,"h1"),s(1,"Menu"),a())},styles:["[_nghost-%COMP%]{display:block}"]});let t=e;return t})();export{m as MenuComponent};
