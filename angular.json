@@ -110,7 +110,8 @@
         "deploy": {
           "builder": "angular-cli-ghpages:deploy",
           "options": {
-            "repo": "https://github.com/ArthurBardakov/Notify.git"
+            "repo": "https://github.com/ArthurBardakov/Notify.git",
+            "baseHref": "/Notify/"
           }
         }
       }
